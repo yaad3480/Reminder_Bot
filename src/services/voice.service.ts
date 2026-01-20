@@ -1,4 +1,4 @@
-import axios from 'axios';
+/*import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
 import ffmpeg from 'fluent-ffmpeg';
@@ -94,4 +94,13 @@ export const transcribeAudio = async (url: string, platform: 'whatsapp' | 'teleg
         if (fs.existsSync(outputPath)) fs.unlinkSync(outputPath);
         return null;
     }
-};
+};*/
+export async function transcribeAudio(
+  _filePath: string,
+  _platform: 'telegram' | 'whatsapp'
+) {
+  // Voice support disabled for local testing
+  return "";
+}
+
+

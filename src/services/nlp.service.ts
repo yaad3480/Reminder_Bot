@@ -1,3 +1,4 @@
+/*
 import OpenAI from 'openai';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -42,3 +43,39 @@ export const parseReminderIntent = async (text: string, referenceDate: Date = ne
         return null;
     }
 };
+*/
+// If no API key use this part of code
+/*export function parseReminderIntent(text: string) {
+  return {
+    intent: "create_reminder",
+    confidence: 1.0,
+
+    isoDate: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
+    recurrence: undefined, // ✅ FIXED
+    confirmationText: `Reminder set for 5 minutes from now`,
+
+    extracted: {
+      message: text,
+      time: "5 minutes"
+    }
+  };
+}*/
+import { parseMock } from "./providers/mock.provider";
+import { parseWithGroq } from "./providers/groq.provider";
+
+export async function parseReminderIntent(text: string) {
+  if (process.env.ENABLE_NLP !== "true") {
+    return parseMock(text);
+  }
+
+  if (!process.env.GROQ_API_KEY) {
+    console.warn("⚠️ GROQ_API_KEY missing, falling back to mock NLP");
+    return parseMock(text);
+  }
+
+  return parseWithGroq(text);
+}
+
+
+
+
