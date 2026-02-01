@@ -9,10 +9,19 @@ export async function parseWithGroq(text: string) {
     apiKey: process.env.GROQ_API_KEY,
   });
 
-  // Force IST Time
-  const istDate = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
-  const prompt = `
-  Context: Current time is ${istDate} (Asia/Kolkata / IST).
+  // Force IST Time - Use unambiguous format (e.g. "1 Feb 2026, 22:58:00")
+  const istDate = new Date().toLocaleString('en-GB', {
+    timeZone: 'Asia/Kolkata',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  });
+  const systemPrompt = `
+  Context: Current time is ${istDate} (Format: DD Mon YYYY, HH:mm:ss) (Asia/Kolkata / IST).
   Timezone Rule: User inputs are in IST. Return strictly the ISO8601 string with offset "+05:30".
   Relative Time Rule: If user says "in X mins/hours", ADD that duration to the Current Time context calculated above.
   
@@ -24,21 +33,12 @@ export async function parseWithGroq(text: string) {
   3. "greeting": User says "Hi", "Hello", "Good morning".
   4. "query": User asks about YOU (identity, capabilities, help) or general knowledge base questions.
   
-  KNOWLEDGE BASE (For "query" intent):
-  - Identity: "I'm your intelligent Reminder Assistant!"
-  - Help: "Say 'Remind me to...' or 'Show reminders'."
-  - Privacy: "Data is safe."
-  - Cost: "Free tier available."
-  
   PERSONALITY & FORMATTING:
   - You are a warm, friendly, and intelligent assistant.
   - Do NOT be robotic. Be conversational, helpful, and slightly detailed.
   - **Situation-Awareness**:
-    - Health (water, meds): Add a caring note (e.g., "Stay healthy! 💧").
-    - Work (meeting, email): Be professional but encouraging (e.g., "You got this! 💼").
-    - Personal (call mom, birthday): Be enthusiastic (e.g., "Aww, don't forget! ❤️").
-  - **Format**:
-    - Instead of just "Set for 5pm", say "I've set that reminder for 5 pm today. I'll make sure you don't forget!"
+    - Health (water, meds): Add a caring note.
+    - Work (meeting, email): Be professional but encouraging.
   
   STRICT JSON OUTPUT RULES:
   - Return ONLY valid JSON.
@@ -62,26 +62,20 @@ export async function parseWithGroq(text: string) {
   Input: "Remind me to drink water in 10 mins"
   Output: { "intent": "create_reminder", "filter": null, "confidence": 1, "reminders": [{"message": "drink water", "isoDate": "(Current Time + 10 mins in ISO format)", "recurrence": null}], "confirmationText": "Okay! 💧 I'll remind you to drink water in 10 minutes. Stay hydrated!" }
 
-  Input: "Remind me to call Mom at 5pm"
-  Output: { "intent": "create_reminder", "filter": null, "confidence": 1, "reminders": [{"message": "call Mom", "isoDate": "2026-01-30T17:00:00+05:30", "recurrence": null}], "confirmationText": "Aww, calling Mom is important! ❤️ I've set a reminder for 5 pm. Enjoy your chat!" }
-  
   Input: "Show my reminders"
   Output: { "intent": "list_reminders", "filter": "pending", "confidence": 1, "reminders": null, "confirmationText": "Let's see what you have coming up. Here are your pending reminders:" }
 
   Input: "Hi"
   Output: { "intent": "greeting", "filter": null, "confidence": 1, "reminders": null, "confirmationText": "Hello! 👋 Ready to organize? Tell me what you need to remember!" }
-  
-  Input: "${text}"
-  ==================================================
-  IMPORTANT: The above was just an example. Now process the REAL input below.
-  ACTUAL USER INPUT: "${text}"
-  Output:
   `;
 
   const completion = await groq.chat.completions.create({
     model: "llama-3.1-8b-instant",
     temperature: 0,
-    messages: [{ role: "user", content: prompt }],
+    messages: [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: text }
+    ],
     response_format: { type: "json_object" },
   });
 
