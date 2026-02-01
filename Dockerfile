@@ -19,6 +19,7 @@ RUN npm run build
 # The COPY . . already brings 'admin' folder.
 
 # Expose port 7860 (Standard for Hugging Face Spaces)
+ENV PORT=7860
 EXPOSE 7860
 
 # Init command
