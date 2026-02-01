@@ -1,13 +1,19 @@
 import axios from 'axios';
 import { Telegraf } from 'telegraf';
 import { config } from '../config/env';
+import https from 'https';
 
 /* =========================
    Telegram Setup
 ========================= */
 
 // Config now guarantees these are present or throws on startup
-export const telegramBot = new Telegraf(config.telegramToken);
+// Force IPv4 Agent to fix ENOTFOUND errors on Hugging Face
+export const telegramBot = new Telegraf(config.telegramToken, {
+  telegram: {
+    agent: new https.Agent({ family: 4, keepAlive: true })
+  }
+});
 
 /* =========================
    WhatsApp Setup
