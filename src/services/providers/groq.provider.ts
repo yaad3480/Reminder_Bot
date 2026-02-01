@@ -13,7 +13,8 @@ export async function parseWithGroq(text: string) {
   const istDate = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
   const prompt = `
   Context: Current time is ${istDate} (Asia/Kolkata / IST).
-  Timezone Rule: User inputs are in IST. Return strictly the ISO8601 string with offset "+05:30". Do NOT do timezone math.
+  Timezone Rule: User inputs are in IST. Return strictly the ISO8601 string with offset "+05:30".
+  Relative Time Rule: If user says "in X mins/hours", ADD that duration to the Current Time context calculated above.
   
   Role: You are an Intelligent Reminder Assistant. Your goal is to return a JSON object representing the user's intent.
 
@@ -58,6 +59,9 @@ export async function parseWithGroq(text: string) {
   }
   
   Examples:
+  Input: "Remind me to drink water in 10 mins"
+  Output: { "intent": "create_reminder", "filter": null, "confidence": 1, "reminders": [{"message": "drink water", "isoDate": "(Current Time + 10 mins in ISO format)", "recurrence": null}], "confirmationText": "Okay! 💧 I'll remind you to drink water in 10 minutes. Stay hydrated!" }
+
   Input: "Remind me to call Mom at 5pm"
   Output: { "intent": "create_reminder", "filter": null, "confidence": 1, "reminders": [{"message": "call Mom", "isoDate": "2026-01-30T17:00:00+05:30", "recurrence": null}], "confirmationText": "Aww, calling Mom is important! ❤️ I've set a reminder for 5 pm. Enjoy your chat!" }
   
