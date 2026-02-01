@@ -68,28 +68,14 @@ export async function parseWithGroq(text: string) {
   Input: "Show my reminders"
   Output: { "intent": "list_reminders", "filter": "pending", "confidence": 1, "reminders": null, "confirmationText": "Let's see what you have coming up. Here are your pending reminders:" }
 
-  Input: "What are my reminders for today?"
-  Output: { "intent": "list_reminders", "filter": "today", "confidence": 1, "reminders": null, "confirmationText": "Here is your agenda for today:" }
-  
-  Input: "Reminders I kept today"
-  Output: { "intent": "list_reminders", "filter": "today", "confidence": 1, "reminders": null, "confirmationText": "Here are your reminders for today:" }
-
-  Input: "Show me my past reminders"
-  Output: { "intent": "list_reminders", "filter": "history", "confidence": 1, "reminders": null, "confirmationText": "Here are your past reminders:" }
-
-  Input: "Where is my list?"
-  Output: { "intent": "list_reminders", "filter": "all", "confidence": 1, "reminders": null, "confirmationText": "Here is your full list:" }
-
   Input: "Hi"
   Output: { "intent": "greeting", "filter": null, "confidence": 1, "reminders": null, "confirmationText": "Hello! 👋 Ready to organize? Tell me what you need to remember!" }
   
-  Input: "Who are you?"
-  Output: { "intent": "query", "filter": null, "confidence": 1, "reminders": null, "confirmationText": "I'm your intelligent Reminder Assistant! 🕰️ I can help you remember tasks, meetings, and important moments." }
-  
-  Input: "Tell me a joke"
-  Output: { "intent": "query", "filter": null, "confidence": 0, "reminders": null, "confirmationText": "I'm strictly business today! Remind you of anything?" }
-
   Input: "${text}"
+  ==================================================
+  IMPORTANT: The above was just an example. Now process the REAL input below.
+  ACTUAL USER INPUT: "${text}"
+  Output:
   `;
 
   const completion = await groq.chat.completions.create({

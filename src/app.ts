@@ -63,8 +63,7 @@ app.use(express.urlencoded({ extended: true }));
 connectDB();
 
 // Initialize Scheduler
-// Initialize Scheduler
-// initScheduler(); // Disabled for Vercel (Use /api/cron/tick)
+initScheduler();
 
 // Routes
 app.use(express.static('public')); // Serve landing page assets
@@ -84,10 +83,7 @@ app.get('/admin', (req, res) => {
 app.use(adminRoutes);
 
 import { createReminderController, confirmReminderController, fetchDueRemindersController, createVoiceReminderController } from './controllers/reminder.controller';
-import { cronTick } from './controllers/cron.controller';
 // Explicit Routes for "Do only these"
-app.get('/api/cron/tick', cronTick as any); // Vercel Cron Route
-
 app.post('/api/reminders', createReminderController as any);
 app.post('/api/reminders/voice', createVoiceReminderController as any);
 app.get('/api/reminders/due', fetchDueRemindersController as any);

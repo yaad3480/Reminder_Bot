@@ -1,6 +1,12 @@
 # Use Node 20
 FROM node:20
 
+# Install tzdata for Timezone Support
+RUN apt-get update && apt-get install -y tzdata
+
+# Set Timezone to Asia/Kolkata
+ENV TZ=Asia/Kolkata
+
 # Create app directory
 WORKDIR /app
 
@@ -14,11 +20,7 @@ COPY . .
 # Build TypeScript
 RUN npm run build
 
-# Copy Admin Dashboard to dist/admin if not automatically handled OR assure src/app.ts serves from root 'admin'
-# Since app.ts serves 'admin' from root 'admin' folder relative to CWD, we just need the source files.
-# The COPY . . already brings 'admin' folder.
-
-# Expose port 7860 (Standard for Hugging Face Spaces)
+# Expose port 7860
 ENV PORT=7860
 EXPOSE 7860
 
