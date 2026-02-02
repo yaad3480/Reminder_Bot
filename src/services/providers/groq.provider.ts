@@ -71,7 +71,7 @@ export async function parseWithGroq(text: string) {
   `;
 
   const completion = await groq.chat.completions.create({
-    model: "llama-3.1-8b-instant",
+    model: "llama-3.3-70b-versatile",
     temperature: 0,
     messages: [
       { role: "system", content: systemPrompt },
@@ -81,6 +81,8 @@ export async function parseWithGroq(text: string) {
   });
 
   const raw = completion.choices[0].message.content!.trim();
+  console.log('[Groq] Input:', text);
+  console.log('[Groq] Raw Response:', raw);
 
   // Remove markdown code blocks if present
   let cleaned = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '');
