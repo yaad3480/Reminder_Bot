@@ -2,6 +2,7 @@ import cron from 'node-cron';
 import Reminder from '../models/Reminder';
 import SystemLog from '../models/SystemLog'; // Import Logging Model
 import { sendMessage } from './bot.service';
+import { PersonalityService } from './personality.service';
 
 export const initScheduler = () => {
   // Run every minute
@@ -87,10 +88,11 @@ export const initScheduler = () => {
 
         try {
           // ATTEMPT DELIVERY
+          const friendlyMessage = await PersonalityService.rewriteReminder(reminder.text);
           const delivered = await sendMessage(
             user.platform,
             user.platformId,
-            `⏰ *Reminder*: ${reminder.text}`
+            friendlyMessage
           );
 
           if (!delivered) {

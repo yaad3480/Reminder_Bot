@@ -109,4 +109,45 @@ export async function parseWithGroq(text: string, referenceDate: Date = new Date
   }
 
 
+
+  export async function generateFriendlyMessage(task: string): Promise<string> {
+    if (!process.env.GROQ_API_KEY) {
+      return `*Reminder*: ${task}`; // Fallback
+    }
+
+    const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+
+    const systemPrompt = \`
+  Role: You are a friendly, witty, and motivating personal assistant.
+  Task: The user needs to be reminded to: "\${task}".
+  Goal: Rewrite this reminder into a short, engaging, and friendly notification (Max 2 sentences).
+  
+  Styles:
+  - If it's about food: Be appetizing.
+  - If it's about water: Be caring.
+  - If it's work/study: Be encouraging.
+  - If it's generic: Be witty.
+
+  Constraints:
+  - Do NOT use quotes around the output.
+  - Do NOT say "Here is your reminder". Just say the message.
+  - Include 1 relevant emoji.
+  \`;
+
+  try {
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      temperature: 0.7, // Slightly higher for creativity
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: "Generate now." }
+      ],
+    });
+
+    return completion.choices[0].message.content?.trim() || \`*Reminder*: \${task}\`;
+  } catch (error) {
+    console.error('Personality Gen Error:', error);
+    return \`*Reminder*: \${task}\`;
+  }
 }
+
