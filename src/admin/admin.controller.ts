@@ -126,3 +126,22 @@ export const updateUserLimit = async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Failed to update limit' });
     }
 };
+
+export const clearPendingReminders = async (req: Request, res: Response) => {
+    try {
+        const result = await Reminder.deleteMany({ status: 'pending' });
+
+        await SystemLog.create({
+            action: 'CLEAR_REMINDERS',
+            details: { count: result.deletedCount, status: 'pending' }
+        });
+
+        res.json({
+            message: 'Pending reminders cleared',
+            count: result.deletedCount
+        });
+    } catch (error) {
+        console.error('Clear Pending Reminders Error:', error);
+        res.status(500).json({ error: 'Failed to clear pending reminders' });
+    }
+};

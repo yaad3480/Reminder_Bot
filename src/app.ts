@@ -86,6 +86,8 @@ app.get('/admin', (req, res) => {
     res.sendFile('index.html', { root: 'admin' });
 });
 
+
+
 // Admin routes
 app.use(adminRoutes);
 
@@ -103,6 +105,7 @@ app.post('/webhooks/whatsapp', handleWhatsappEvent);
 
 // Telegram Polling (for local dev/simplicity)
 const launchBot = async (retries = 5, delay = 3000) => {
+    console.log('🚀 Attempting to launch Telegram Bot...');
     try {
         await telegramBot.launch();
         console.log('✅ Telegram Bot launched successfully');
@@ -116,7 +119,11 @@ const launchBot = async (retries = 5, delay = 3000) => {
     }
 };
 
-if (process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_BOT_TOKEN !== 'dummy_token' && process.env.TELEGRAM_BOT_TOKEN !== 'your_telegram_bot_token') {
+console.log('Checking Telegram Token:', process.env.TELEGRAM_BOT_TOKEN ? 'Present' : 'Missing');
+const isProduction = process.env.NODE_ENV === 'production';
+
+if (isProduction && process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_BOT_TOKEN !== 'dummy_token' && process.env.TELEGRAM_BOT_TOKEN !== 'your_telegram_bot_token') {
+    console.log('Token check passed & Production Environment detected. Calling launchBot()...');
     launchBot();
 
     telegramBot.on('text', (ctx) => {
@@ -156,7 +163,7 @@ if (process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_BOT_TOKEN !== 'dummy_
     process.once('SIGINT', () => telegramBot.stop('SIGINT'));
     process.once('SIGTERM', () => telegramBot.stop('SIGTERM'));
 } else {
-    console.log('Telegram Token not set, skipping bot launch.');
+    console.log('Telegram Bot Skipped: ' + (isProduction ? 'Token missing' : 'Running in Local/Dev Mode'));
 }
 
 app.listen(port, () => {
