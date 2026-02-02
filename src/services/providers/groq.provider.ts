@@ -139,7 +139,7 @@ export async function generateFriendlyMessage(task: string): Promise<string> {
   try {
     const completion = await groq.chat.completions.create({
       model: "llama-3.3-70b-versatile",
-      temperature: 0.7, // Slightly higher for creativity
+      temperature: 0.7,
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: "Generate now." }
