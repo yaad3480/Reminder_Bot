@@ -120,7 +120,11 @@ const launchBot = async (retries = 5, delay = 3000) => {
 };
 
 console.log('Checking Telegram Token:', process.env.TELEGRAM_BOT_TOKEN ? 'Present' : 'Missing');
-const isProduction = process.env.NODE_ENV === 'production';
+console.log('Environment Debug:', {
+    NODE_ENV: process.env.NODE_ENV,
+    RAILWAY_ENV: process.env.RAILWAY_ENVIRONMENT_NAME
+});
+const isProduction = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT_NAME === 'production';
 
 if (isProduction && process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_BOT_TOKEN !== 'dummy_token' && process.env.TELEGRAM_BOT_TOKEN !== 'your_telegram_bot_token') {
     console.log('Token check passed & Production Environment detected. Calling launchBot()...');
