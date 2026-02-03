@@ -170,6 +170,6 @@ if (isProduction && process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_BOT_T
     console.log('Telegram Bot Skipped: ' + (isProduction ? 'Token missing' : 'Running in Local/Dev Mode'));
 }
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
     console.log(`Server is running on port ${port}`);
 });
