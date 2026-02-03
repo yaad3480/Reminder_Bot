@@ -90,6 +90,15 @@ export const processTextReminder = async (
         throw new Error('User not found and could not be created');
     }
 
+    // 1.5 Enforce Reminder Limit (Total Lifetime Count)
+    const totalReminders = await Reminder.countDocuments({ user: user._id });
+    if (totalReminders >= user.reminderLimit) {
+        return {
+            reminder: null,
+            confirmationText: `⚠️ *Limit Reached*\n\nYou have used ${totalReminders}/${user.reminderLimit} free reminders.\n\nPlease upgrade to Premium to continue setting reminders!`
+        };
+    }
+
     // 2. Resolve Date/Time (NLP if needed)
     let scheduledAt = providedScheduledAt;
     let recurrence = providedRecurrence;

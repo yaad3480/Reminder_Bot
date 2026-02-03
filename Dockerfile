@@ -1,28 +1,35 @@
-# Use Node 18 (Bullseye) for better DNS stability
-FROM node:18-bullseye
+# Stage 1: Builder
+FROM node:18-bullseye-slim AS builder
 
-# Install tzdata for Timezone Support
-RUN apt-get update && apt-get install -y tzdata
-
-# Set Timezone to Asia/Kolkata
-ENV TZ=Asia/Kolkata
-
-# Create app directory
 WORKDIR /app
 
-# Install app dependencies
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
-# Bundle app source
 COPY . .
-
-# Build TypeScript
 RUN npm run build
 
-# Expose port 7860
-ENV PORT=7860
+# Stage 2: Runner
+FROM node:18-bullseye-slim
+
+# Install tzdata for Timezone Support
+RUN apt-get update && apt-get install -y tzdata && rm -rf /var/lib/apt/lists/*
+ENV TZ=Asia/Kolkata
+
+WORKDIR /app
+
+# Copy package files and install production dependencies
+COPY --from=builder /app/package*.json ./
+RUN npm ci --only=production
+
+# Copy built application
+COPY --from=builder /app/dist ./dist
+
+# Copy static assets
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/admin ./admin
+
+# Expose port
 EXPOSE 7860
 
-# Init command
 CMD [ "npm", "start" ]
