@@ -24,7 +24,7 @@ import rateLimit from 'express-rate-limit';
 
 const app = express();
 app.set('trust proxy', 1); // Required for Hugging Face / Reverse Proxies
-const port = process.env.PORT || 7860;
+const port = parseInt(process.env.PORT || '7860', 10);
 
 // Rate Limiter
 const globalLimiter = rateLimit({
