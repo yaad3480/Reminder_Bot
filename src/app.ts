@@ -1,0 +1,175 @@
+import dotenv from 'dotenv';
+dotenv.config(); // Must be first
+
+// Extend Express Request type
+declare global {
+    namespace Express {
+        interface Request {
+            subdomain?: 'admin' | 'main';
+        }
+    }
+}
+
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import { connectDB } from './config/db';
+import { verifyWhatsapp, handleWhatsappEvent } from './controllers/webhook.controller';
+import { telegramBot } from './services/bot.service';
+import { handleIncomingMessage } from './services/message_handler.service';
+import { initScheduler } from './services/scheduler.service';
+import adminRoutes from './admin/admin.routes';
+import rateLimit from 'express-rate-limit';
+
+const app = express();
+app.set('trust proxy', 1); // Required for Hugging Face / Reverse Proxies
+const port = process.env.PORT || 7860;
+
+// Rate Limiter
+const globalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
+    message: 'Too many requests from this IP, please try again later.',
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+    validate: { xForwardedForHeader: false } // Disable strict validation to prevent crashes behind proxies
+});
+
+const apiLimiter = rateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 20, // Stricter limit for heavy APIs
+    message: 'Too many API requests, please slow down.',
+    standardHeaders: true,
+    legacyHeaders: false,
+    validate: { xForwardedForHeader: false }
+});
+
+
+// Middleware
+// CORS Configuration - strict for production
+const corsOptions = {
+    origin: process.env.NODE_ENV === 'production'
+        ? process.env.ALLOWED_ORIGINS?.split(',') || false // Only specified origins in production
+        : true, // Allow all in development
+    credentials: true, // Allow cookies/auth headers
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
+// app.use(helmet()); // DISABLING HELMET TO FIX CSP ISSUES FOR ADMIN DASHBOARD
+app.use(morgan('dev'));
+app.use('/api/', apiLimiter); // Apply stricter limit to /api routes
+app.use(globalLimiter); // Apply global limit to everything else (like webhooks if not excluded)
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
+// Connect to Database
+connectDB();
+
+// Initialize Scheduler
+initScheduler();
+
+// Routes
+app.use(express.static('public')); // Serve landing page assets
+app.use('/admin', express.static('admin')); // Serve admin assets at /admin
+
+// Root Route -> Landing Page
+app.get('/', (req, res) => {
+    res.sendFile('index.html', { root: 'public' });
+});
+
+// Admin Route -> Admin Dashboard
+app.get('/admin', (req, res) => {
+    res.sendFile('index.html', { root: 'admin' });
+});
+
+
+
+// Admin routes
+app.use(adminRoutes);
+
+import { createReminderController, confirmReminderController, fetchDueRemindersController, createVoiceReminderController } from './controllers/reminder.controller';
+// Explicit Routes for "Do only these"
+app.post('/api/reminders', createReminderController as any);
+app.post('/api/reminders/voice', createVoiceReminderController as any);
+app.get('/api/reminders/due', fetchDueRemindersController as any);
+app.get('/api/reminders/:id/confirm', confirmReminderController as any);
+
+
+// WhatsApp Webhooks
+app.get('/webhooks/whatsapp', verifyWhatsapp);
+app.post('/webhooks/whatsapp', handleWhatsappEvent);
+
+// Telegram Polling (for local dev/simplicity)
+const launchBot = async (retries = 5, delay = 3000) => {
+    console.log('🚀 Attempting to launch Telegram Bot...');
+    try {
+        await telegramBot.launch();
+        console.log('✅ Telegram Bot launched successfully');
+    } catch (err) {
+        if (retries > 0) {
+            console.error(`⚠️ Telegram Bot Launch Error: ${err}. Retrying in ${delay / 1000}s... (${retries} attempts left)`);
+            setTimeout(() => launchBot(retries - 1, delay * 2), delay);
+        } else {
+            console.error('❌ Failed to launch Telegram Bot after multiple attempts:', err);
+        }
+    }
+};
+
+console.log('Checking Telegram Token:', process.env.TELEGRAM_BOT_TOKEN ? 'Present' : 'Missing');
+console.log('Environment Debug:', {
+    NODE_ENV: process.env.NODE_ENV,
+    RAILWAY_ENV: process.env.RAILWAY_ENVIRONMENT_NAME
+});
+const isProduction = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT_NAME === 'production';
+
+if (isProduction && process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_BOT_TOKEN !== 'dummy_token' && process.env.TELEGRAM_BOT_TOKEN !== 'your_telegram_bot_token') {
+    console.log('Token check passed & Production Environment detected. Calling launchBot()...');
+    launchBot();
+
+    telegramBot.on('text', (ctx) => {
+        const userId = ctx.from.id.toString();
+        const userName = ctx.from.first_name || 'User';
+        const text = ctx.message.text;
+        handleIncomingMessage('telegram', userId, userName, text);
+    });
+
+    telegramBot.on('voice', async (ctx) => {
+        const userId = ctx.from.id.toString();
+        const userName = ctx.from.first_name || 'User';
+        try {
+            const fileId = ctx.message.voice.file_id;
+            const fileUrl = await ctx.telegram.getFileLink(fileId);
+
+            await ctx.reply("🎧 Processing your voice message...");
+
+            // Dynamic import to avoid circular dependency if valid, or just normal import if structured well.
+            // But voice.service imports nothing that imports app.ts.
+            const { transcribeAudio } = await import('./services/voice.service');
+            const text = await transcribeAudio(fileUrl.toString(), 'telegram');
+
+            if (text) {
+                await ctx.reply(`🗣 I heard: "${text}"`);
+                handleIncomingMessage('telegram', userId, userName, text);
+            } else {
+                await ctx.reply("Sorry, I couldn't understand the audio.");
+            }
+        } catch (error) {
+            console.error('Telegram Voice Error:', error);
+            await ctx.reply("Error processing voice message.");
+        }
+    });
+
+    // Graceful stop
+    process.once('SIGINT', () => telegramBot.stop('SIGINT'));
+    process.once('SIGTERM', () => telegramBot.stop('SIGTERM'));
+} else {
+    console.log('Telegram Bot Skipped: ' + (isProduction ? 'Token missing' : 'Running in Local/Dev Mode'));
+}
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});

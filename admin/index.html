@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Workspace | Reminder Bot</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4F46E5;
+            /* Indigo 600 */
+            --primary-hover: #4338CA;
+            --bg-body: #F3F4F6;
+            /* Gray 100 */
+            --bg-card: #FFFFFF;
+            --text-main: #111827;
+            /* Gray 900 */
+            --text-muted: #6B7280;
+            /* Gray 500 */
+            --border: #E5E7EB;
+            /* Gray 200 */
+            --sidebar-bg: #1F2937;
+            /* Gray 800 */
+            --sidebar-active: #374151;
+            /* Gray 700 */
+            --success-bg: #D1FAE5;
+            --success-text: #065F46;
+            --warning-bg: #FEF3C7;
+            --warning-text: #92400E;
+            --danger-bg: #FEE2E2;
+            --danger-text: #B91C1C;
+            --info-bg: #DBEAFE;
+            --info-text: #1E40AF;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background: var(--bg-body);
+            color: var(--text-main);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            color: #E5E7EB;
+            display: flex;
+            flex-direction: column;
+            padding: 24px 0;
+            flex-shrink: 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin: 0 0 32px 0;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .nav-item {
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid transparent;
+            color: #9CA3AF;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .nav-item.active {
+            background: var(--sidebar-active);
+            border-left-color: var(--primary);
+            color: #fff;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        h1 {
+            color: var(--text-main);
+            margin: 0 0 24px 0;
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            text-align: left;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1;
+        }
+
+        .stat-card p {
+            margin: 8px 0 0;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Tables & Cards */
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            /* For rounded corners on tables */
+            margin-top: 24px;
+        }
+
+        .card h3 {
+            padding: 20px 24px;
+            margin: 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 1.1rem;
+            color: var(--text-main);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 16px 24px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: #F9FAFB;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            font-size: 0.95rem;
+            color: #374151;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #F9FAFB;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+
+        .badge-success {
+            background: var(--success-bg);
+            color: var(--success-text);
+        }
+
+        .badge-warning {
+            background: var(--warning-bg);
+            color: var(--warning-text);
+        }
+
+        .badge-danger {
+            background: var(--danger-bg);
+            color: var(--danger-text);
+        }
+
+        .badge-info {
+            background: var(--info-bg);
+            color: var(--info-text);
+        }
+
+        /* Buttons & Inputs */
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: #b91c1c;
+            border-color: #fecaca;
+        }
+
+        .btn-danger:hover {
+            background: #fecaca;
+        }
+
+        .btn-success {
+            background: #d1fae5;
+            color: #065f46;
+            border-color: #a7f3d0;
+        }
+
+        .btn-success:hover {
+            background: #a7f3d0;
+        }
+
+        input,
+        select {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .limit-input {
+            width: 70px;
+        }
+
+        /* Filter Toolbar */
+        .filter-bar {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 160px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .filter-group .form-control {
+            width: 100%;
+            box-sizing: border-box;
+            /* Fix width issues */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <h2>🤖 Workspace</h2>
+        <div class="nav-item active" id="nav-dashboard">
+            <span>📊</span> Dashboard
+        </div>
+        <div class="nav-item" id="nav-users">
+            <span>👥</span> Users
+        </div>
+        <div class="nav-item" id="nav-reminders">
+            <span>⏰</span> Reminders
+        </div>
+        <div class="nav-item" id="nav-logs">
+            <span>📜</span> System Logs
+        </div>
+        <div style="flex-grow:1"></div>
+        <div class="nav-item" id="nav-logout" style="color: #F87171;">
+            <span>🚪</span> Logout
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="section active">
+            <h1>Dashboard Overview</h1>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 id="totalUsers">-</h3>
+                    <p>Total Users</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="activeUsers">-</h3>
+                    <p>Active Users</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="totalReminders">-</h3>
+                    <p>Total Reminders</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="pendingReminders" style="color: var(--primary);">-</h3>
+                    <p>Pending Reminders</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Recent Activity & Logs</h3>
+                <table id="recentLogsTable">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Action</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Users Section -->
+        <div id="users" class="section">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px;">
+                <h1>User Management</h1>
+                <select id="userFilter">
+                    <option value="all">All Platforms</option>
+                    <option value="whatsapp">WhatsApp</option>
+                    <option value="telegram">Telegram</option>
+                </select>
+            </div>
+            <div class="card">
+                <table id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>User Details</th>
+                            <th>Name</th>
+                            <th>Reminders</th>
+                            <th>Limit Control</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Reminders Section -->
+        <div id="reminders" class="section">
+            <h1>Active Reminders</h1>
+
+            <!-- Filters Toolbar -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label>Platform</label>
+                    <select id="reminderFilterPlatform" class="form-control">
+                        <option value="all">All Platforms</option>
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="telegram">Telegram</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Status</label>
+                    <select id="reminderFilterStatus" class="form-control">
+                        <option value="all">All Statuses</option>
+                        <option value="pending">Pending</option>
+                        <option value="processing">Processing</option>
+                        <option value="sent">Sent</option>
+                        <option value="failed">Failed</option>
+                    </select>
+                </div>
+
+                <div class="filter-group" style="flex: 2;">
+                    <label>Search Message</label>
+                    <input type="text" id="reminderFilterMessage" placeholder="Search reminder text..."
+                        class="form-control">
+                </div>
+
+                <div class="filter-group">
+                    <label>User</label>
+                    <input type="text" id="reminderFilterUser" placeholder="Username..." class="form-control">
+                </div>
+
+                <div class="filter-group">
+                    <label>Scheduled Date</label>
+                    <input type="date" id="reminderFilterDate" class="form-control">
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 0;">
+                <table id="remindersTable">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Platform</th>
+                            <th>Message</th>
+                            <th>Scheduled For (DD/MM/YYYY)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Logs Section -->
+        <div id="logs" class="section">
+            <h1>System Audit Logs</h1>
+            <div class="card">
+                <table id="fullLogsTable">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Action</th>
+                            <th>Target User</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Logic (Preserved functionality) -->
+    <script>
+        // If served from port 3001 (dev), point to 3000. Otherwise (prod), use relative path.
+        const IS_DEV = window.location.port === '3001';
+        const API_BASE = IS_DEV ? 'http://localhost:3000/api/admin' : '/api/admin';
+
+        // Force clear if corrupted
+        try {
+            if (localStorage.getItem('admin_token') === 'null') localStorage.removeItem('admin_token');
+        } catch (e) { }
+
+        let AUTH_TOKEN = localStorage.getItem('admin_token');
+        let globalUsers = [];
+        let globalReminders = [];
+
+        console.log('Admin Dashboard Loaded. Token present:', !!AUTH_TOKEN);
+
+        // Check authentication on load
+        if (!AUTH_TOKEN) {
+            console.log('No token found, prompting login...');
+            showLoginForm();
+        } else {
+            console.log('Token found, loading stats...');
+            loadStats();
+        }
+
+        // --- EVENT LISTENERS ---
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('nav-dashboard').addEventListener('click', () => showSection('dashboard'));
+            document.getElementById('nav-users').addEventListener('click', () => showSection('users'));
+            document.getElementById('nav-reminders').addEventListener('click', () => showSection('reminders'));
+            document.getElementById('nav-logs').addEventListener('click', () => showSection('logs'));
+            document.getElementById('nav-logout').addEventListener('click', logout);
+
+            // Filters - Users
+            document.getElementById('userFilter').addEventListener('change', () => renderUsers());
+
+            // Filters - Reminders
+            const remFilters = ['reminderFilterPlatform', 'reminderFilterStatus', 'reminderFilterMessage', 'reminderFilterUser', 'reminderFilterDate'];
+            remFilters.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('input', () => renderReminders());
+                    el.addEventListener('change', () => renderReminders());
+                }
+            });
+        });
+
+        function showLoginForm() {
+            setTimeout(() => {
+                const username = prompt('Enter Username:');
+                if (!username) { alert('Login Required'); return; }
+                const password = prompt('Enter Password:');
+                if (!password) { alert('Login Required'); return; }
+
+                AUTH_TOKEN = btoa(`${username}:${password}`);
+                localStorage.setItem('admin_token', AUTH_TOKEN);
+                location.reload();
+            }, 100);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('admin_token');
+                location.reload();
+            }
+        }
+
+        async function authFetch(url, options = {}) {
+            const headers = {
+                'Authorization': `Basic ${AUTH_TOKEN}`,
+                ...options.headers
+            };
+
+            try {
+                const res = await fetch(url, { ...options, headers });
+                if (res.status === 401 || res.status === 403) {
+                    console.warn('Auth failed (401/403)');
+                    localStorage.removeItem('admin_token');
+                    alert('Session expired. Please login again.');
+                    location.reload();
+                    throw new Error('Unauthorized');
+                }
+                return res;
+            } catch (error) {
+                console.error('Fetch Error:', error);
+                throw error;
+            }
+        }
+
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(id).classList.add('active');
+            const navId = 'nav-' + id;
+            if (document.getElementById(navId)) document.getElementById(navId).classList.add('active');
+
+            if (id === 'dashboard') loadStats();
+            if (id === 'users') loadUsers();
+            if (id === 'reminders') loadReminders();
+            if (id === 'logs') loadLogs();
+        }
+
+        async function loadStats() {
+            try {
+                const res = await authFetch(`${API_BASE}/stats`);
+                const data = await res.json();
+
+                document.getElementById('totalUsers').innerText = data.totalUsers;
+                document.getElementById('activeUsers').innerText = data.activeUsers;
+                document.getElementById('totalReminders').innerText = data.totalReminders;
+                document.getElementById('pendingReminders').innerText = data.pendingReminders;
+
+                const logsBody = document.querySelector('#recentLogsTable tbody');
+                logsBody.innerHTML = data.recentLogs.map(log => `
+                    <tr>
+                        <td>${new Date(log.timestamp).toLocaleTimeString('en-GB')}</td>
+                        <td><span class="badge badge-info">${log.action}</span></td>
+                        <td>${JSON.stringify(log.details || {})}</td>
+                    </tr>
+                `).join('');
+            } catch (err) { console.error('Load Stats Failed:', err); }
+        }
+
+        async function loadUsers() {
+            try {
+                const res = await authFetch(`${API_BASE}/users`);
+                globalUsers = await res.json();
+                renderUsers();
+            } catch (err) { console.error('Load Users Failed:', err); }
+        }
+
+        function renderUsers() {
+            const filter = document.getElementById('userFilter').value;
+            const tbody = document.querySelector('#usersTable tbody');
+            tbody.innerHTML = '';
+
+            globalUsers.forEach(user => {
+                if (filter !== 'all' && user.platform !== filter) return;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>
+                        <div style="font-weight:600; color:var(--text-main);">${user.platform}</div>
+                        <div style="font-size:0.85em; color:var(--text-muted); font-family:monospace;">${user.platformId}</div>
+                    </td>
+                    <td>${user.name || 'Unknown'}</td>
+                    <td>
+                        <span class="badge ${user.pendingCount > 0 ? 'badge-warning' : 'badge-info'}">${user.pendingCount} Pending</span>
+                        <span style="color:var(--text-muted); margin-left:8px; font-size:0.85em;">of ${user.reminderCount}</span>
+                    </td>
+                    <td>
+                        <div class="controls">
+                            <input type="number" class="limit-input" value="${user.reminderLimit}" id="limit-${user._id}">
+                            <button class="btn btn-primary btn-save-limit" data-userid="${user._id}">Save</button>
+                        </div>
+                    </td>
+                    <td>
+                        ${user.isBanned
+                        ? '<span class="badge badge-danger">Banned</span>'
+                        : '<span class="badge badge-success">Active</span>'}
+                    </td>
+                    <td>
+                        <button class="btn ${user.isBanned ? 'btn-success' : 'btn-danger'} btn-toggle-ban" 
+                            data-userid="${user._id}" data-banned="${user.isBanned}">
+                            ${user.isBanned ? 'Unban' : 'Ban'}
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.querySelectorAll('.btn-save-limit').forEach(btn =>
+                btn.addEventListener('click', (e) => updateLimit(e.target.dataset.userid)));
+            document.querySelectorAll('.btn-toggle-ban').forEach(btn =>
+                btn.addEventListener('click', (e) => toggleBan(e.target.dataset.userid, e.target.dataset.banned === 'true')));
+        }
+
+        async function loadReminders() {
+            try {
+                const res = await authFetch(`${API_BASE}/reminders`);
+                globalReminders = await res.json();
+                renderReminders();
+            } catch (err) { console.error('Load Reminders Failed:', err); }
+        }
+
+        function renderReminders() {
+            const fPlatform = document.getElementById('reminderFilterPlatform').value;
+            const fStatus = document.getElementById('reminderFilterStatus').value;
+            const fMessage = document.getElementById('reminderFilterMessage').value.toLowerCase();
+            const fUser = document.getElementById('reminderFilterUser').value.toLowerCase();
+            const fDate = document.getElementById('reminderFilterDate').value;
+
+            const tbody = document.querySelector('#remindersTable tbody');
+            tbody.innerHTML = '';
+
+            globalReminders.forEach(rem => {
+                const platform = rem.user ? rem.user.platform : 'unknown';
+                const userName = rem.user ? (rem.user.name || '').toLowerCase() : '';
+                const message = (rem.text || '').toLowerCase();
+                const status = rem.status;
+
+                let dateMatch = true;
+                if (fDate) {
+                    const sched = new Date(rem.scheduledAt);
+                    const schedStr = sched.toISOString().split('T')[0];
+                    if (schedStr !== fDate) dateMatch = false;
+                }
+
+                if (fPlatform !== 'all' && platform !== fPlatform) return;
+                if (fStatus !== 'all' && status !== fStatus) return;
+                if (fMessage && !message.includes(fMessage)) return;
+                if (fUser && !userName.includes(fUser)) return;
+                if (!dateMatch) return;
+
+                let badgeClass = 'badge-warning';
+                if (status === 'processing') badgeClass = 'badge-info';
+                if (status === 'sent') badgeClass = 'badge-success';
+                if (status === 'failed') badgeClass = 'badge-danger';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>
+                        <div style="font-weight:500;">${rem.user ? rem.user.name : 'Deleted User'}</div>
+                    </td>
+                    <td><span class="badge badge-info">${platform}</span></td>
+                    <td style="max-width:300px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${rem.text}">
+                        ${rem.text}
+                    </td>
+                    <td>${new Date(rem.scheduledAt).toLocaleString('en-GB')}</td>
+                    <td><span class="badge ${badgeClass}">${status}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function loadLogs() {
+            try {
+                const res = await authFetch(`${API_BASE}/logs`);
+                const logs = await res.json();
+
+                const tbody = document.querySelector('#fullLogsTable tbody');
+                tbody.innerHTML = logs.map(log => `
+                     <tr>
+                        <td>${new Date(log.timestamp).toLocaleString('en-GB')}</td>
+                        <td><span class="badge badge-info">${log.action}</span></td>
+                        <td>${log.targetUserId || '-'}</td>
+                        <td style="font-family:monospace; font-size:0.85em; color:var(--text-muted);">${JSON.stringify(log.details || {})}</td>
+                    </tr>
+                `).join('');
+            } catch (err) { console.error('Load Logs Failed:', err); }
+        }
+
+        async function toggleBan(userId, isCurrentBanned) {
+            if (!confirm(`Are you sure you want to ${isCurrentBanned ? 'unban' : 'ban'} this user?`)) return;
+            try {
+                await authFetch(`${API_BASE}/users/${userId}/ban`, { method: 'POST' });
+                loadUsers();
+            } catch (err) { alert('Action failed'); }
+        }
+
+        async function updateLimit(userId) {
+            const limit = document.getElementById(`limit-${userId}`).value;
+            try {
+                await authFetch(`${API_BASE}/users/${userId}/limit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ limit })
+                });
+                alert('Limit updated!');
+            } catch (err) { alert('Update failed'); }
+        }
+    </script>
+</body>
+
+</html>
