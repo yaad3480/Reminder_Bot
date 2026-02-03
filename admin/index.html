@@ -3,43 +3,98 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Admin Dashboard - Reminder Assistant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Workspace | Reminder Bot</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --primary: #4F46E5;
+            /* Indigo 600 */
+            --primary-hover: #4338CA;
+            --bg-body: #F3F4F6;
+            /* Gray 100 */
+            --bg-card: #FFFFFF;
+            --text-main: #111827;
+            /* Gray 900 */
+            --text-muted: #6B7280;
+            /* Gray 500 */
+            --border: #E5E7EB;
+            /* Gray 200 */
+            --sidebar-bg: #1F2937;
+            /* Gray 800 */
+            --sidebar-active: #374151;
+            /* Gray 700 */
+            --success-bg: #D1FAE5;
+            --success-text: #065F46;
+            --warning-bg: #FEF3C7;
+            --warning-text: #92400E;
+            --danger-bg: #FEE2E2;
+            --danger-text: #B91C1C;
+            --info-bg: #DBEAFE;
+            --info-text: #1E40AF;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0;
             display: flex;
             height: 100vh;
-            background: #f4f6f9;
+            background: var(--bg-body);
+            color: var(--text-main);
         }
 
         /* Sidebar */
         .sidebar {
-            width: 250px;
-            background: #2c3e50;
-            color: #ecf0f1;
+            width: 260px;
+            background: var(--sidebar-bg);
+            color: #E5E7EB;
             display: flex;
             flex-direction: column;
-            padding: 20px 0;
+            padding: 24px 0;
+            flex-shrink: 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .sidebar h2 {
             text-align: center;
-            margin-bottom: 30px;
-            font-size: 1.5em;
+            margin: 0 0 32px 0;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .nav-item {
-            padding: 15px 25px;
+            padding: 12px 24px;
             cursor: pointer;
-            transition: background 0.3s;
-            font-size: 1.1em;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid transparent;
+            color: #9CA3AF;
         }
 
-        .nav-item:hover,
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
         .nav-item.active {
-            background: #34495e;
-            border-left: 4px solid #3498db;
+            background: var(--sidebar-active);
+            border-left-color: var(--primary);
+            color: #fff;
         }
 
         /* Main Content */
@@ -51,6 +106,19 @@
 
         .section {
             display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .section.active {
@@ -58,47 +126,68 @@
         }
 
         h1 {
-            color: #2c3e50;
-            margin-bottom: 30px;
+            color: var(--text-main);
+            margin: 0 0 24px 0;
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
         }
 
         /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
         }
 
         .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            text-align: center;
+            background: var(--bg-card);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            text-align: left;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .stat-card h3 {
             margin: 0;
-            font-size: 2.5em;
-            color: #2c3e50;
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1;
         }
 
         .stat-card p {
-            margin: 10px 0 0;
-            color: #7f8c8d;
-            text-transform: uppercase;
-            font-size: 0.9em;
-            letter-spacing: 1px;
+            margin: 8px 0 0;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 500;
         }
 
-        /* Tables */
+        /* Tables & Cards */
         .card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            margin-top: 20px;
-            overflow-x: auto;
+            background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            /* For rounded corners on tables */
+            margin-top: 24px;
+        }
+
+        .card h3 {
+            padding: 20px 24px;
+            margin: 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 1.1rem;
+            color: var(--text-main);
         }
 
         table {
@@ -108,88 +197,174 @@
 
         th,
         td {
-            padding: 15px;
+            padding: 16px 24px;
             text-align: left;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--border);
         }
 
         th {
-            background: #f8f9fa;
-            color: #2c3e50;
+            background: #F9FAFB;
+            color: var(--text-muted);
             font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            font-size: 0.95rem;
+            color: #374151;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
         }
 
         tr:hover {
-            background: #f9f9f9;
+            background: #F9FAFB;
         }
 
         /* Badges */
         .badge {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            line-height: 1.25;
         }
 
         .badge-success {
-            background: #d4edda;
-            color: #155724;
+            background: var(--success-bg);
+            color: var(--success-text);
         }
 
         .badge-warning {
-            background: #fff3cd;
-            color: #856404;
+            background: var(--warning-bg);
+            color: var(--warning-text);
         }
 
         .badge-danger {
-            background: #f8d7da;
-            color: #721c24;
+            background: var(--danger-bg);
+            color: var(--danger-text);
         }
 
         .badge-info {
-            background: #d1ecf1;
-            color: #0c5460;
+            background: var(--info-bg);
+            color: var(--info-text);
         }
 
-        /* Buttons */
+        /* Buttons & Inputs */
         .btn {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 4px;
+            padding: 8px 16px;
+            border: 1px solid transparent;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.9em;
-            transition: opacity 0.3s;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .btn:hover {
-            opacity: 0.8;
-        }
-
-        .btn-danger {
-            background: #e74c3c;
-            color: white;
-        }
-
-        .btn-success {
-            background: #2ecc71;
-            color: white;
+        .btn:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
         }
 
         .btn-primary {
-            background: #3498db;
+            background: var(--primary);
             color: white;
         }
 
-        /* Controls */
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: #b91c1c;
+            border-color: #fecaca;
+        }
+
+        .btn-danger:hover {
+            background: #fecaca;
+        }
+
+        .btn-success {
+            background: #d1fae5;
+            color: #065f46;
+            border-color: #a7f3d0;
+        }
+
+        .btn-success:hover {
+            background: #a7f3d0;
+        }
+
+        input,
+        select {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
         .controls {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
         }
 
         .limit-input {
-            width: 60px;
-            padding: 4px;
+            width: 70px;
+        }
+
+        /* Filter Toolbar */
+        .filter-bar {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 160px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .filter-group .form-control {
+            width: 100%;
+            box-sizing: border-box;
+            /* Fix width issues */
         }
     </style>
 </head>
@@ -197,13 +372,23 @@
 <body>
 
     <div class="sidebar">
-        <h2>🤖 Admin</h2>
-        <div class="nav-item active" id="nav-dashboard">Dashboard</div>
-        <div class="nav-item" id="nav-users">Users</div>
-        <div class="nav-item" id="nav-reminders">Reminders</div>
-        <div class="nav-item" id="nav-logs">System Logs</div>
+        <h2>🤖 Workspace</h2>
+        <div class="nav-item active" id="nav-dashboard">
+            <span>📊</span> Dashboard
+        </div>
+        <div class="nav-item" id="nav-users">
+            <span>👥</span> Users
+        </div>
+        <div class="nav-item" id="nav-reminders">
+            <span>⏰</span> Reminders
+        </div>
+        <div class="nav-item" id="nav-logs">
+            <span>📜</span> System Logs
+        </div>
         <div style="flex-grow:1"></div>
-        <div class="nav-item" id="nav-logout" style="background:#c0392b;">Logout</div>
+        <div class="nav-item" id="nav-logout" style="color: #F87171;">
+            <span>🚪</span> Logout
+        </div>
     </div>
 
     <div class="main-content">
@@ -224,13 +409,13 @@
                     <p>Total Reminders</p>
                 </div>
                 <div class="stat-card">
-                    <h3 id="pendingReminders">-</h3>
+                    <h3 id="pendingReminders" style="color: var(--primary);">-</h3>
                     <p>Pending Reminders</p>
                 </div>
             </div>
 
             <div class="card">
-                <h3>Recent System Logs</h3>
+                <h3>Recent Activity & Logs</h3>
                 <table id="recentLogsTable">
                     <thead>
                         <tr>
@@ -246,9 +431,9 @@
 
         <!-- Users Section -->
         <div id="users" class="section">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px;">
                 <h1>User Management</h1>
-                <select id="userFilter" style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                <select id="userFilter">
                     <option value="all">All Platforms</option>
                     <option value="whatsapp">WhatsApp</option>
                     <option value="telegram">Telegram</option>
@@ -258,10 +443,10 @@
                 <table id="usersTable">
                     <thead>
                         <tr>
-                            <th>Platform</th>
+                            <th>User Details</th>
                             <th>Name</th>
-                            <th>Reminders (Pending / Total)</th>
-                            <th>Limit</th>
+                            <th>Reminders</th>
+                            <th>Limit Control</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -273,64 +458,55 @@
 
         <!-- Reminders Section -->
         <div id="reminders" class="section">
-            <div style="margin-bottom: 20px;">
-                <h1>Active Reminders</h1>
+            <h1>Active Reminders</h1>
 
-                <!-- Filters Toolbar -->
-                <div
-                    style="display: flex; gap: 10px; flex-wrap: wrap; background: white; padding: 15px; border-radius: 8px; align-items: flex-end;">
+            <!-- Filters Toolbar -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label>Platform</label>
+                    <select id="reminderFilterPlatform" class="form-control">
+                        <option value="all">All Platforms</option>
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="telegram">Telegram</option>
+                    </select>
+                </div>
 
-                    <div style="flex: 1; min-width: 150px;">
-                        <label style="display:block; font-size:0.8em; color:#777; margin-bottom:5px;">Platform</label>
-                        <select id="reminderFilterPlatform" class="form-control"
-                            style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;">
-                            <option value="all">All Platforms</option>
-                            <option value="whatsapp">WhatsApp</option>
-                            <option value="telegram">Telegram</option>
-                        </select>
-                    </div>
+                <div class="filter-group">
+                    <label>Status</label>
+                    <select id="reminderFilterStatus" class="form-control">
+                        <option value="all">All Statuses</option>
+                        <option value="pending">Pending</option>
+                        <option value="processing">Processing</option>
+                        <option value="sent">Sent</option>
+                        <option value="failed">Failed</option>
+                    </select>
+                </div>
 
-                    <div style="flex: 1; min-width: 150px;">
-                        <label style="display:block; font-size:0.8em; color:#777; margin-bottom:5px;">Status</label>
-                        <select id="reminderFilterStatus" class="form-control"
-                            style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;">
-                            <option value="all">All Statuses</option>
-                            <option value="pending">Pending</option>
-                            <option value="processing">Processing</option>
-                            <option value="sent">Sent</option>
-                            <option value="failed">Failed</option>
-                        </select>
-                    </div>
+                <div class="filter-group" style="flex: 2;">
+                    <label>Search Message</label>
+                    <input type="text" id="reminderFilterMessage" placeholder="Search reminder text..."
+                        class="form-control">
+                </div>
 
-                    <div style="flex: 2; min-width: 200px;">
-                        <label style="display:block; font-size:0.8em; color:#777; margin-bottom:5px;">Search
-                            Message</label>
-                        <input type="text" id="reminderFilterMessage" placeholder="Type to search..."
-                            style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;">
-                    </div>
+                <div class="filter-group">
+                    <label>User</label>
+                    <input type="text" id="reminderFilterUser" placeholder="Username..." class="form-control">
+                </div>
 
-                    <div style="flex: 1; min-width: 150px;">
-                        <label style="display:block; font-size:0.8em; color:#777; margin-bottom:5px;">User Name</label>
-                        <input type="text" id="reminderFilterUser" placeholder="User..."
-                            style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;">
-                    </div>
-
-                    <div style="flex: 1; min-width: 150px;">
-                        <label style="display:block; font-size:0.8em; color:#777; margin-bottom:5px;">Scheduled
-                            Date</label>
-                        <input type="date" id="reminderFilterDate"
-                            style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;">
-                    </div>
+                <div class="filter-group">
+                    <label>Scheduled Date</label>
+                    <input type="date" id="reminderFilterDate" class="form-control">
                 </div>
             </div>
-            <div class="card">
+
+            <div class="card" style="margin-top: 0;">
                 <table id="remindersTable">
                     <thead>
                         <tr>
                             <th>User</th>
                             <th>Platform</th>
                             <th>Message</th>
-                            <th>Scheduled For</th>
+                            <th>Scheduled For (DD/MM/YYYY)</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -358,10 +534,10 @@
         </div>
     </div>
 
+    <!-- Script Logic (Preserved functionality) -->
     <script>
         // If served from port 3001 (dev), point to 3000. Otherwise (prod), use relative path.
         const IS_DEV = window.location.port === '3001';
-        // In local dev (port 3001), use explicit localhost:3000. In prod (same origin), use relative path.
         const API_BASE = IS_DEV ? 'http://localhost:3000/api/admin' : '/api/admin';
 
         // Force clear if corrupted
@@ -384,7 +560,7 @@
             loadStats();
         }
 
-        // --- EVENT LISTENERS (Fixed for CSP) ---
+        // --- EVENT LISTENERS ---
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('nav-dashboard').addEventListener('click', () => showSection('dashboard'));
             document.getElementById('nav-users').addEventListener('click', () => showSection('users'));
@@ -400,28 +576,19 @@
             remFilters.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) {
-                    el.addEventListener('input', () => renderReminders()); // Works for text inputs
-                    el.addEventListener('change', () => renderReminders()); // Works for selects/dates
+                    el.addEventListener('input', () => renderReminders());
+                    el.addEventListener('change', () => renderReminders());
                 }
             });
         });
 
         function showLoginForm() {
-            // Small delay to ensure render
             setTimeout(() => {
                 const username = prompt('Enter Username:');
-                if (!username) {
-                    alert('Login Required');
-                    return;
-                }
-
+                if (!username) { alert('Login Required'); return; }
                 const password = prompt('Enter Password:');
-                if (!password) {
-                    alert('Login Required');
-                    return;
-                }
+                if (!password) { alert('Login Required'); return; }
 
-                // Create Basic Auth token
                 AUTH_TOKEN = btoa(`${username}:${password}`);
                 localStorage.setItem('admin_token', AUTH_TOKEN);
                 location.reload();
@@ -429,13 +596,12 @@
         }
 
         function logout() {
-            if (confirm('Logout?')) {
+            if (confirm('Are you sure you want to logout?')) {
                 localStorage.removeItem('admin_token');
                 location.reload();
             }
         }
 
-        // Add auth header to all requests
         async function authFetch(url, options = {}) {
             const headers = {
                 'Authorization': `Basic ${AUTH_TOKEN}`,
@@ -444,11 +610,10 @@
 
             try {
                 const res = await fetch(url, { ...options, headers });
-
                 if (res.status === 401 || res.status === 403) {
                     console.warn('Auth failed (401/403)');
                     localStorage.removeItem('admin_token');
-                    alert('Session expired or invalid credentials.');
+                    alert('Session expired. Please login again.');
                     location.reload();
                     throw new Error('Unauthorized');
                 }
@@ -459,26 +624,20 @@
             }
         }
 
-        // Navigation
         function showSection(id) {
             document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
 
             document.getElementById(id).classList.add('active');
-
-            // Find nav item by id mapping
             const navId = 'nav-' + id;
-            const navEl = document.getElementById(navId);
-            if (navEl) navEl.classList.add('active');
+            if (document.getElementById(navId)) document.getElementById(navId).classList.add('active');
 
-            // Load data based on section
             if (id === 'dashboard') loadStats();
             if (id === 'users') loadUsers();
             if (id === 'reminders') loadReminders();
             if (id === 'logs') loadLogs();
         }
 
-        // Fetch & Render Functions
         async function loadStats() {
             try {
                 const res = await authFetch(`${API_BASE}/stats`);
@@ -511,7 +670,7 @@
         function renderUsers() {
             const filter = document.getElementById('userFilter').value;
             const tbody = document.querySelector('#usersTable tbody');
-            tbody.innerHTML = ''; // Clear first
+            tbody.innerHTML = '';
 
             globalUsers.forEach(user => {
                 if (filter !== 'all' && user.platform !== filter) return;
@@ -519,11 +678,14 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>
-                        <span class="badge badge-info">${user.platform}</span><br>
-                        <small>${user.platformId}</small>
+                        <div style="font-weight:600; color:var(--text-main);">${user.platform}</div>
+                        <div style="font-size:0.85em; color:var(--text-muted); font-family:monospace;">${user.platformId}</div>
                     </td>
                     <td>${user.name || 'Unknown'}</td>
-                    <td><b>${user.pendingCount}</b> Pending <span style="color:#777; font-size:0.9em;">(${user.reminderCount} Total)</span></td>
+                    <td>
+                        <span class="badge ${user.pendingCount > 0 ? 'badge-warning' : 'badge-info'}">${user.pendingCount} Pending</span>
+                        <span style="color:var(--text-muted); margin-left:8px; font-size:0.85em;">of ${user.reminderCount}</span>
+                    </td>
                     <td>
                         <div class="controls">
                             <input type="number" class="limit-input" value="${user.reminderLimit}" id="limit-${user._id}">
@@ -545,13 +707,10 @@
                 tbody.appendChild(tr);
             });
 
-            // Attach Listeners for dynamic elements
-            document.querySelectorAll('.btn-save-limit').forEach(btn => {
-                btn.addEventListener('click', (e) => updateLimit(e.target.dataset.userid));
-            });
-            document.querySelectorAll('.btn-toggle-ban').forEach(btn => {
-                btn.addEventListener('click', (e) => toggleBan(e.target.dataset.userid, e.target.dataset.banned === 'true'));
-            });
+            document.querySelectorAll('.btn-save-limit').forEach(btn =>
+                btn.addEventListener('click', (e) => updateLimit(e.target.dataset.userid)));
+            document.querySelectorAll('.btn-toggle-ban').forEach(btn =>
+                btn.addEventListener('click', (e) => toggleBan(e.target.dataset.userid, e.target.dataset.banned === 'true')));
         }
 
         async function loadReminders() {
@@ -563,12 +722,11 @@
         }
 
         function renderReminders() {
-            // Get Filters
             const fPlatform = document.getElementById('reminderFilterPlatform').value;
             const fStatus = document.getElementById('reminderFilterStatus').value;
             const fMessage = document.getElementById('reminderFilterMessage').value.toLowerCase();
             const fUser = document.getElementById('reminderFilterUser').value.toLowerCase();
-            const fDate = document.getElementById('reminderFilterDate').value; // YYYY-MM-DD
+            const fDate = document.getElementById('reminderFilterDate').value;
 
             const tbody = document.querySelector('#remindersTable tbody');
             tbody.innerHTML = '';
@@ -579,33 +737,33 @@
                 const message = (rem.text || '').toLowerCase();
                 const status = rem.status;
 
-                // Date Check
                 let dateMatch = true;
                 if (fDate) {
                     const sched = new Date(rem.scheduledAt);
-                    // Convert sched to local YYYY-MM-DD for comparison
                     const schedStr = sched.toISOString().split('T')[0];
                     if (schedStr !== fDate) dateMatch = false;
                 }
 
-                // Apply Filters
                 if (fPlatform !== 'all' && platform !== fPlatform) return;
                 if (fStatus !== 'all' && status !== fStatus) return;
                 if (fMessage && !message.includes(fMessage)) return;
                 if (fUser && !userName.includes(fUser)) return;
                 if (!dateMatch) return;
 
-                // Status Badge Color
-                let badgeClass = 'badge-warning'; // pending
+                let badgeClass = 'badge-warning';
                 if (status === 'processing') badgeClass = 'badge-info';
                 if (status === 'sent') badgeClass = 'badge-success';
                 if (status === 'failed') badgeClass = 'badge-danger';
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${rem.user ? rem.user.name : 'Deleted User'}</td>
+                    <td>
+                        <div style="font-weight:500;">${rem.user ? rem.user.name : 'Deleted User'}</div>
+                    </td>
                     <td><span class="badge badge-info">${platform}</span></td>
-                    <td>${rem.text}</td>
+                    <td style="max-width:300px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${rem.text}">
+                        ${rem.text}
+                    </td>
                     <td>${new Date(rem.scheduledAt).toLocaleString('en-GB')}</td>
                     <td><span class="badge ${badgeClass}">${status}</span></td>
                 `;
@@ -624,18 +782,17 @@
                         <td>${new Date(log.timestamp).toLocaleString('en-GB')}</td>
                         <td><span class="badge badge-info">${log.action}</span></td>
                         <td>${log.targetUserId || '-'}</td>
-                        <td>${JSON.stringify(log.details || {})}</td>
+                        <td style="font-family:monospace; font-size:0.85em; color:var(--text-muted);">${JSON.stringify(log.details || {})}</td>
                     </tr>
                 `).join('');
             } catch (err) { console.error('Load Logs Failed:', err); }
         }
 
-        // Actions
         async function toggleBan(userId, isCurrentBanned) {
             if (!confirm(`Are you sure you want to ${isCurrentBanned ? 'unban' : 'ban'} this user?`)) return;
             try {
                 await authFetch(`${API_BASE}/users/${userId}/ban`, { method: 'POST' });
-                loadUsers(); // Refresh
+                loadUsers();
             } catch (err) { alert('Action failed'); }
         }
 
@@ -651,7 +808,6 @@
             } catch (err) { alert('Update failed'); }
         }
     </script>
-
 </body>
 
 </html>
