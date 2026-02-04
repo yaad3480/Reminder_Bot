@@ -14,6 +14,7 @@ export interface IReminder extends Document {
         type: 'daily' | 'weekly' | 'monthly' | 'interval';
         intervalValue?: number;
     };
+    lastTriggeredAt?: Date;
     createdAt: Date;
 }
 
@@ -27,6 +28,7 @@ const ReminderSchema: Schema = new Schema({
     // Delivery Logic
     earlyAlertMinutes: { type: Number },
     earlyAlertSent: { type: Boolean, default: false },
+    lastTriggeredAt: { type: Date },
     retryCount: { type: Number, default: 0 },
     maxRetries: { type: Number, default: 3 },
 

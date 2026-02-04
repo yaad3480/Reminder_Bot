@@ -59,13 +59,13 @@ export const handleIncomingMessage = async (
             let header = "📅 *Your Reminders*";
 
             if (filter === 'history') {
-                // Last 30 days, completed/sent
-                const thirtyDaysAgo = new Date();
-                thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                // Last 15 days, completed/sent
+                const fifteenDaysAgo = new Date();
+                fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15);
                 query.status = { $ne: 'pending' };
-                query.scheduledAt = { $gte: thirtyDaysAgo };
+                query.scheduledAt = { $gte: fifteenDaysAgo };
                 sort = { scheduledAt: -1 };
-                header = "📜 *History (Last 30 Days)*";
+                header = "📜 *History (Last 15 Days)*";
             } else if (filter === 'today') {
                 // Today (IST Start to End) - SHOW ALL STATUSES
                 const now = new Date();
@@ -80,9 +80,13 @@ export const handleIncomingMessage = async (
                 sort = { scheduledAt: 1 };
                 header = "📅 *Today's Agenda*";
             } else if (filter === 'all') {
-                // Show everything (active + history)
+                // Show everything (active + history), constrained to 15 days history
+                const fifteenDaysAgo = new Date();
+                fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15);
+                query.scheduledAt = { $gte: fifteenDaysAgo };
+
                 sort = { scheduledAt: -1 };
-                header = "🗂️ *All Reminders*";
+                header = "🗂️ *All Reminders (Last 15 Days + Pending)*";
             } else {
                 // Pending (Default)
                 query.status = 'pending';

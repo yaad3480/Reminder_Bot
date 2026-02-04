@@ -24,7 +24,7 @@ import rateLimit from 'express-rate-limit';
 
 const app = express();
 app.set('trust proxy', 1); // Required for Hugging Face / Reverse Proxies
-const port = process.env.PORT || 7860;
+const port = parseInt(process.env.PORT || '7860', 10);
 
 // Rate Limiter
 const globalLimiter = rateLimit({
@@ -170,6 +170,6 @@ if (isProduction && process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_BOT_T
     console.log('Telegram Bot Skipped: ' + (isProduction ? 'Token missing' : 'Running in Local/Dev Mode'));
 }
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
     console.log(`Server is running on port ${port}`);
 });
