@@ -60,10 +60,18 @@ const corsOptions = {
 app.use(cors(corsOptions));
 // app.use(helmet()); // DISABLING HELMET TO FIX CSP ISSUES FOR ADMIN DASHBOARD
 app.use(morgan('dev'));
-app.use('/api/', apiLimiter); // Apply stricter limit to /api routes
-app.use(globalLimiter); // Apply global limit to everything else (like webhooks if not excluded)
+
+// Parse JSON and URL-encoded bodies BEFORE rate limiting (needed for webhooks)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Twilio WhatsApp Webhook - MUST be before rate limiter
+import { handleTwilioWebhook } from './controllers/webhook.controller';
+app.post('/webhooks/twilio', handleTwilioWebhook);
+
+// Apply rate limiting AFTER webhook routes
+app.use('/api/', apiLimiter); // Apply stricter limit to /api routes
+app.use(globalLimiter); // Apply global limit to everything else (like webhooks if not excluded)
 
 
 // Connect to Database
@@ -102,10 +110,6 @@ app.get('/api/reminders/:id/confirm', confirmReminderController as any);
 // WhatsApp Webhooks
 app.get('/webhooks/whatsapp', verifyWhatsapp);
 app.post('/webhooks/whatsapp', handleWhatsappEvent);
-
-// Twilio WhatsApp Webhook
-import { handleTwilioWebhook } from './controllers/webhook.controller';
-app.post('/webhooks/twilio', handleTwilioWebhook);
 
 // Telegram Polling (for local dev/simplicity)
 const launchBot = async (retries = 5, delay = 3000) => {
