@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import { handleIncomingMessage } from '../services/message_handler.service';
 import { telegramBot } from '../services/bot.service';
 import { config } from '../config/env';
+import { sendWhatsAppMessage } from '../services/twilio.service';
 
 // Validate WhatsApp Signature
 const validateSignature = (req: Request): boolean => {
@@ -105,3 +106,64 @@ export const handleWhatsappEvent = async (req: Request, res: Response) => {
         res.sendStatus(500);
     }
 };
+
+// Twilio WhatsApp Webhook Handler
+export const handleTwilioWebhook = async (req: Request, res: Response) => {
+    try {
+        const body = req.body;
+        console.log('📱 Twilio WhatsApp Webhook received:', JSON.stringify(body, null, 2));
+
+        // Extract message details from Twilio webhook payload
+        const from = body.From; // Format: whatsapp:+919876543210
+        const to = body.To; // Format: whatsapp:+14155238886
+        const messageBody = body.Body || '';
+        const numMedia = parseInt(body.NumMedia || '0', 10);
+        const profileName = body.ProfileName || 'User';
+
+        // Extract phone number without 'whatsapp:' prefix for userId
+        const userId = from.replace('whatsapp:', '');
+
+        console.log(`📩 Message from ${profileName} (${userId}): ${messageBody}`);
+
+        // Handle text messages
+        if (messageBody && messageBody.trim() !== '') {
+            // Route to existing message handler (reusing Telegram logic)
+            await handleIncomingMessage('whatsapp', userId, profileName, messageBody);
+        }
+
+        // Handle voice/audio messages
+        if (numMedia > 0) {
+            const mediaUrl = body.MediaUrl0;
+            const mediaContentType = body.MediaContentType0;
+
+            console.log(`🎧 Media received: ${mediaContentType} - ${mediaUrl}`);
+
+            // Check if it's an audio file
+            if (mediaContentType && mediaContentType.startsWith('audio/')) {
+                try {
+                    await sendWhatsAppMessage(from, "🎧 Processing your voice message...");
+
+                    const { transcribeAudio } = await import('../services/voice.service');
+                    const text = await transcribeAudio(mediaUrl, 'whatsapp');
+
+                    if (text) {
+                        await sendWhatsAppMessage(from, `🗣 I heard: "${text}"`);
+                        await handleIncomingMessage('whatsapp', userId, profileName, text);
+                    } else {
+                        await sendWhatsAppMessage(from, "Sorry, I couldn't understand the audio.");
+                    }
+                } catch (error) {
+                    console.error('❌ Voice processing error:', error);
+                    await sendWhatsAppMessage(from, "Error processing voice message.");
+                }
+            }
+        }
+
+        // Twilio expects a TwiML response or 200 OK
+        res.status(200).send('<?xml version="1.0" encoding="UTF-8"?><Response></Response>');
+    } catch (error) {
+        console.error('❌ Twilio Webhook Error:', error);
+        res.sendStatus(500);
+    }
+};
+

@@ -56,28 +56,15 @@ export const sendMessage = async (
 
   if (platform === 'whatsapp') {
     try {
-      await axios.post(
-        `https://graph.facebook.com/v17.0/${whatsappPhoneId}/messages`,
-        {
-          messaging_product: 'whatsapp',
-          to: platformId,
-          type: 'text',
-          text: { body: text },
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${whatsappToken}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-
-      console.log('✅ WhatsApp message delivered:', platformId);
+      // Use Twilio for WhatsApp instead of WhatsApp Cloud API
+      const { sendWhatsAppMessage, formatWhatsAppNumber } = await import('./twilio.service');
+      const formattedNumber = formatWhatsAppNumber(platformId);
+      await sendWhatsAppMessage(formattedNumber, text);
       return true;
     } catch (error: any) {
       console.error(
         '❌ WhatsApp sendMessage FAILED:',
-        error.response?.data || error.message
+        error.message || error
       );
       throw error;
     }

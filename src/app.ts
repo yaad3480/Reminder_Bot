@@ -103,6 +103,10 @@ app.get('/api/reminders/:id/confirm', confirmReminderController as any);
 app.get('/webhooks/whatsapp', verifyWhatsapp);
 app.post('/webhooks/whatsapp', handleWhatsappEvent);
 
+// Twilio WhatsApp Webhook
+import { handleTwilioWebhook } from './controllers/webhook.controller';
+app.post('/webhooks/twilio', handleTwilioWebhook);
+
 // Telegram Polling (for local dev/simplicity)
 const launchBot = async (retries = 5, delay = 3000) => {
     console.log('🚀 Attempting to launch Telegram Bot...');
