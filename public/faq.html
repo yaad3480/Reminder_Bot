@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Frequently Asked Questions about RemindBot - Your AI-powered reminder assistant for WhatsApp and Telegram">
+    <meta name="keywords"
+        content="RemindBot FAQ, reminder bot questions, WhatsApp reminders help, Telegram bot support">
+    <title>FAQ - RemindBot | Your AI Memory Assistant</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐘</text></svg>">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366F1;
+            --primary-dark: #4F46E5;
+            --primary-light: #818CF8;
+            --accent: #EC4899;
+            --accent-light: #F472B6;
+            --bg-dark: #0F172A;
+            --bg-card: rgba(30, 41, 59, 0.5);
+            --text-primary: #F1F5F9;
+            --text-secondary: #CBD5E1;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-light), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-cta {
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 900px;
+            margin: 120px auto 60px;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #FFFFFF 0%, var(--primary-light) 50%, var(--accent-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 60px;
+        }
+
+        /* FAQ Items */
+        .faq-section {
+            margin-bottom: 40px;
+        }
+
+        .faq-category {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            transition: all 0.3s;
+        }
+
+        .faq-item:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .faq-question {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .faq-question::before {
+            content: "Q:";
+            color: var(--accent);
+            font-weight: 800;
+        }
+
+        .faq-answer {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            padding-left: 30px;
+        }
+
+        .faq-answer strong {
+            color: var(--primary-light);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.8);
+            padding: 40px 5%;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 80px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-light);
+        }
+
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .faq-question {
+                font-size: 1.1rem;
+            }
+
+            .container {
+                margin-top: 100px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="logo">🐘 RemindBot</div>
+        <a href="/" class="nav-cta">Back to Home</a>
+    </nav>
+
+    <div class="container">
+        <h1>Frequently Asked Questions</h1>
+        <p class="subtitle">Everything you need to know about RemindBot</p>
+
+        <!-- General Questions -->
+        <div class="faq-section">
+            <h2 class="faq-category">General</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">What is RemindBot?</div>
+                <div class="faq-answer">
+                    RemindBot is an AI-powered reminder assistant that works directly in WhatsApp and Telegram. You can
+                    set reminders using natural language, voice notes, and even in Hindi or Hinglish. No app downloads
+                    or signups required!
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How do I get started?</div>
+                <div class="faq-answer">
+                    Simply click on the "Start on WhatsApp" or "Try on Telegram" button on our homepage. Send a message
+                    like "Remind me to call mom tomorrow at 5pm" and you're all set! The bot will confirm your reminder
+                    and notify you at the right time.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Do I need to download an app?</div>
+                <div class="faq-answer">
+                    No! RemindBot works entirely within WhatsApp and Telegram. You just need to have one of these
+                    messaging apps installed, which you probably already do.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Is RemindBot free?</div>
+                <div class="faq-answer">
+                    Yes! RemindBot is currently <strong>100% free</strong> with unlimited reminders. We may introduce
+                    premium features in the future, but the core functionality will always remain free.
+                </div>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="faq-section">
+            <h2 class="faq-category">Features</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">Can I use voice messages to set reminders?</div>
+                <div class="faq-answer">
+                    Absolutely! Just send a voice note saying something like "Remind me to buy groceries tomorrow at
+                    6pm" and RemindBot will understand and create your reminder.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Does it support Hindi and Hinglish?</div>
+                <div class="faq-answer">
+                    Yes! You can set reminders in English, Hindi, or Hinglish. For example: "Kal subah 7 baje exercise
+                    karne ki yaad dilana" or "Remind me kal 3 baje meeting hai" both work perfectly.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Can I set recurring reminders?</div>
+                <div class="faq-answer">
+                    Yes! You can set daily, weekly, monthly, or custom recurring reminders. Just say "Remind me to take
+                    medicine every day at 9am" or "Meeting every Monday at 3pm" and RemindBot handles the rest.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How do I view my pending reminders?</div>
+                <div class="faq-answer">
+                    Simply message the bot with "Show my reminders" or "List pending reminders" and you'll get a
+                    complete list of all your upcoming reminders.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Can I delete or edit a reminder?</div>
+                <div class="faq-answer">
+                    Yes! You can message "Delete reminder about [topic]" or "Cancel my 3pm reminder" to remove
+                    reminders. To edit, simply delete the old one and create a new reminder.
+                </div>
+            </div>
+        </div>
+
+        <!-- Privacy & Security -->
+        <div class="faq-section">
+            <h2 class="faq-category">Privacy & Security</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">Is my data secure?</div>
+                <div class="faq-answer">
+                    Yes! All your data is encrypted and stored securely. We use WhatsApp-grade security and never share
+                    your personal information with third parties. Your reminders are private and only accessible to you.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Do you store my messages?</div>
+                <div class="faq-answer">
+                    We only store the reminder information you explicitly create. We don't store your entire chat
+                    history, only the reminders you've set and their details (time, message, recurrence).
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How long is my data kept?</div>
+                <div class="faq-answer">
+                    Active reminders are kept until they're completed. Your reminder history is stored for 15 days,
+                    after which it's automatically deleted. You can also manually delete your data anytime.
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical -->
+        <div class="faq-section">
+            <h2 class="faq-category">Technical</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">What time zone does RemindBot use?</div>
+                <div class="faq-answer">
+                    RemindBot is optimized for <strong>Indian Standard Time (IST)</strong>. All reminders are set and
+                    delivered in IST unless you specify otherwise.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What if I don't specify a time?</div>
+                <div class="faq-answer">
+                    If you don't specify a time, RemindBot will ask you for clarification. For example, if you say
+                    "Remind me tomorrow about the meeting," the bot will ask "What time tomorrow?"
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Can I use RemindBot offline?</div>
+                <div class="faq-answer">
+                    You need an internet connection to set reminders, but once set, you'll receive notifications even if
+                    you're temporarily offline (as long as your phone has connectivity when the reminder is due).
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What happens if I miss a reminder notification?</div>
+                <div class="faq-answer">
+                    The reminder message will stay in your chat history, so you can always see it when you check your
+                    messages. For recurring reminders, the next occurrence will still trigger as scheduled.
+                </div>
+            </div>
+        </div>
+
+        <!-- Troubleshooting -->
+        <div class="faq-section">
+            <h2 class="faq-category">Troubleshooting</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">The bot isn't responding. What should I do?</div>
+                <div class="faq-answer">
+                    First, check your internet connection. If that's fine, try sending a simple message like "Hi" to
+                    restart the conversation. If issues persist, contact us through the support channels on our
+                    homepage.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">I didn't receive a reminder notification. Why?</div>
+                <div class="faq-answer">
+                    Check if you have notifications enabled for WhatsApp/Telegram on your phone. Also verify that the
+                    reminder was set correctly by asking "Show my reminders." If the issue continues, please contact
+                    support.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">The bot misunderstood my reminder. What now?</div>
+                <div class="faq-answer">
+                    You can delete the incorrect reminder and create a new one. Try being more specific with dates and
+                    times. For example, instead of "tomorrow morning," say "tomorrow at 9am."
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="faq-section">
+            <h2 class="faq-category">Still have questions?</h2>
+            <div class="faq-item">
+                <div class="faq-answer">
+                    If you couldn't find the answer you're looking for, feel free to reach out to us directly through
+                    WhatsApp or Telegram. We're here to help! You can also check out our <a href="/how-it-works.html"
+                        style="color: var(--primary-light); text-decoration: underline;">detailed guide</a> for more
+                    information.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="/">Home</a>
+            <a href="/faq.html">FAQ</a>
+            <a href="/blog.html">Blog</a>
+            <a href="/how-it-works.html">How it Works</a>
+            <a href="/admin.html">Admin</a>
+        </div>
+        <p class="copyright">© 2024 RemindBot. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

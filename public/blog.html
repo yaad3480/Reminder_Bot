@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="RemindBot Blog - Tips, tutorials, and updates about using your AI reminder assistant effectively">
+    <meta name="keywords" content="RemindBot blog, reminder tips, productivity, WhatsApp automation, Telegram bots">
+    <title>Blog - RemindBot | Tips & Tutorials</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐘</text></svg>">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366F1;
+            --primary-dark: #4F46E5;
+            --primary-light: #818CF8;
+            --accent: #EC4899;
+            --accent-light: #F472B6;
+            --bg-dark: #0F172A;
+            --bg-card: rgba(30, 41, 59, 0.5);
+            --text-primary: #F1F5F9;
+            --text-secondary: #CBD5E1;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-light), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-cta {
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 120px auto 60px;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #FFFFFF 0%, var(--primary-light) 50%, var(--accent-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 60px;
+        }
+
+        /* Blog Grid */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .blog-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .blog-content {
+            padding: 24px;
+        }
+
+        .blog-category {
+            display: inline-block;
+            padding: 6px 12px;
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary-light);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .blog-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .blog-excerpt {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .blog-date {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .blog-read-time {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Coming Soon Message */
+        .coming-soon {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            margin-top: 40px;
+        }
+
+        .coming-soon h2 {
+            font-size: 2rem;
+            color: var(--primary-light);
+            margin-bottom: 16px;
+        }
+
+        .coming-soon p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.8);
+            padding: 40px 5%;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 80px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-light);
+        }
+
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                margin-top: 100px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="logo">🐘 RemindBot</div>
+        <a href="/" class="nav-cta">Back to Home</a>
+    </nav>
+
+    <div class="container">
+        <h1>RemindBot Blog</h1>
+        <p class="subtitle">Tips, tutorials, and updates to help you never forget anything</p>
+
+        <!-- Blog Grid -->
+        <div class="blog-grid">
+            <!-- Blog Post 1 -->
+            <div class="blog-card">
+                <div class="blog-image">📝</div>
+                <div class="blog-content">
+                    <span class="blog-category">Tutorial</span>
+                    <h3 class="blog-title">10 Creative Ways to Use RemindBot</h3>
+                    <p class="blog-excerpt">
+                        Discover innovative ways to use RemindBot beyond simple reminders. From habit tracking to team
+                        coordination, unlock the full potential of your AI assistant.
+                    </p>
+                    <div class="blog-meta">
+                        <span class="blog-date">📅 Coming Soon</span>
+                        <span class="blog-read-time">⏱️ 5 min read</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog Post 2 -->
+            <div class="blog-card">
+                <div class="blog-image">🎯</div>
+                <div class="blog-content">
+                    <span class="blog-category">Productivity</span>
+                    <h3 class="blog-title">Building Better Habits with Recurring Reminders</h3>
+                    <p class="blog-excerpt">
+                        Learn how to leverage recurring reminders to build lasting habits. From morning routines to
+                        fitness goals, make consistency effortless.
+                    </p>
+                    <div class="blog-meta">
+                        <span class="blog-date">📅 Coming Soon</span>
+                        <span class="blog-read-time">⏱️ 7 min read</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog Post 3 -->
+            <div class="blog-card">
+                <div class="blog-image">🎙️</div>
+                <div class="blog-content">
+                    <span class="blog-category">Tips & Tricks</span>
+                    <h3 class="blog-title">Mastering Voice Commands for Faster Reminders</h3>
+                    <p class="blog-excerpt">
+                        Too busy to type? Learn the best practices for using voice notes to set reminders quickly and
+                        accurately, even in Hindi or Hinglish.
+                    </p>
+                    <div class="blog-meta">
+                        <span class="blog-date">📅 Coming Soon</span>
+                        <span class="blog-read-time">⏱️ 4 min read</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog Post 4 -->
+            <div class="blog-card">
+                <div class="blog-image">🔒</div>
+                <div class="blog-content">
+                    <span class="blog-category">Privacy</span>
+                    <h3 class="blog-title">How RemindBot Keeps Your Data Secure</h3>
+                    <p class="blog-excerpt">
+                        A deep dive into our security measures, encryption protocols, and privacy policies. Understand
+                        how we protect your personal information.
+                    </p>
+                    <div class="blog-meta">
+                        <span class="blog-date">📅 Coming Soon</span>
+                        <span class="blog-read-time">⏱️ 6 min read</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog Post 5 -->
+            <div class="blog-card">
+                <div class="blog-image">💡</div>
+                <div class="blog-content">
+                    <span class="blog-category">Use Cases</span>
+                    <h3 class="blog-title">RemindBot for Students: Study Smarter, Not Harder</h3>
+                    <p class="blog-excerpt">
+                        From assignment deadlines to exam prep schedules, discover how students are using RemindBot to
+                        ace their academics without the stress.
+                    </p>
+                    <div class="blog-meta">
+                        <span class="blog-date">📅 Coming Soon</span>
+                        <span class="blog-read-time">⏱️ 5 min read</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog Post 6 -->
+            <div class="blog-card">
+                <div class="blog-image">🚀</div>
+                <div class="blog-content">
+                    <span class="blog-category">Updates</span>
+                    <h3 class="blog-title">What's New in RemindBot: Latest Features</h3>
+                    <p class="blog-excerpt">
+                        Stay updated with the latest features, improvements, and upcoming additions to RemindBot. See
+                        what's on our roadmap for 2024.
+                    </p>
+                    <div class="blog-meta">
+                        <span class="blog-date">📅 Coming Soon</span>
+                        <span class="blog-read-time">⏱️ 3 min read</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coming Soon Message -->
+        <div class="coming-soon">
+            <h2>📚 More Content Coming Soon!</h2>
+            <p>We're working on creating valuable content to help you get the most out of RemindBot. Check back soon for
+                tutorials, tips, and productivity insights!</p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="/">Home</a>
+            <a href="/faq.html">FAQ</a>
+            <a href="/blog.html">Blog</a>
+            <a href="/how-it-works.html">How it Works</a>
+            <a href="/admin.html">Admin</a>
+        </div>
+        <p class="copyright">© 2024 RemindBot. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
