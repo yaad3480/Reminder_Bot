@@ -1147,8 +1147,7 @@
                 <button class="lang-btn active" data-lang="en">English</button>
                 <button class="lang-btn" data-lang="hi">हिंदी</button>
             </div>
-            <button class="nav-cta" onclick="window.location.href='#get-started'" data-translate="nav-cta">Get
-                Started</button>
+            <button class="nav-cta" onclick="window.location.href='#get-started'">Get Started</button>
         </div>
     </nav>
 
@@ -1460,210 +1459,105 @@
             });
         });
 
-        // Language Translation System
-        const translations = {
-            en: {
-                'nav-cta': 'Get Started',
-                'hero-badge': 'AI-Powered Memory Assistant',
-                'hero-title': 'Never forget anything, ever again.',
-                'hero-subtitle': 'A smart reminder assistant that works across WhatsApp and Telegram. Natural language, voice notes, and intelligent scheduling — all in one place.',
-                'btn-whatsapp': 'Start on WhatsApp',
-                'btn-telegram': 'Try on Telegram',
-                'trust-voice': '🎙️ Voice Support',
-                'trust-hindi': '🌐 Hindi & Hinglish',
-                'trust-recurring': '🔄 Smart Recurring',
-                'security-badge': 'Secure & WhatsApp Business Verified',
-                'features-title': 'Everything you need',
-                'feature1-title': 'Instant Chat Reminders',
-                'feature1-desc': 'Just message us like you\'d text a friend. "Meeting at 3pm tomorrow" — done. No apps, no forms, no hassle.',
-                'feature2-title': 'Voice Commands',
-                'feature2-desc': 'Too busy to type? Send a voice note like "Remind me to buy milk tonight" — we handle the rest.',
-                'feature3-title': 'Recurring Reminders',
-                'feature3-desc': 'Set daily, weekly, monthly, or custom intervals. Perfect for habits, pills, and meetings.',
-                'feature4-title': 'Hindi & Hinglish',
-                'feature4-desc': 'Speak naturally in English, Hindi, or Hinglish. We understand all of them perfectly.',
-                'feature5-title': 'Smart History',
-                'feature5-desc': 'View pending reminders or check your 15-day history with simple queries.',
-                'feature6-title': 'Secure & Private',
-                'feature6-desc': 'Your data is encrypted and we never share it. Built with WhatsApp-grade security.',
-                'chat-title': 'See it in action',
-                'chat-bot-name': 'RemindBot',
-                'chat-online': 'Online',
-                'chat-user1': 'Remind me to drink water tomorrow 7am',
-                'chat-bot1': 'Done ✅ I\'ll remind you to drink water tomorrow at 7:00 AM IST.',
-                'chat-user2': 'Meeting with client every Monday 3pm',
-                'chat-bot2': 'Perfect! 🔄 I\'ve set a recurring reminder for "Meeting with client" every Monday at 3:00 PM IST.',
-                'chat-timestamp': 'Just now',
-                'chat-bot-timestamp': 'RemindBot • now',
-                'steps-title': 'How it works',
-                'step1-title': 'Connect',
-                'step1-desc': 'Click one of the buttons above to open WhatsApp or Telegram. No signup, no app download.',
-                'step2-title': 'Message',
-                'step2-desc': 'Send a message like "Meeting tomorrow 3pm" or a voice note in Hindi. We understand both.',
-                'step3-title': 'Relax',
-                'step3-desc': 'We\'ll notify you at the perfect moment. You can also ask "Show my reminders" anytime.',
-                'pricing-title': 'Simple, transparent pricing',
-                'pricing-free-badge': 'Currently Available',
-                'pricing-free-title': 'Free',
-                'pricing-free-price': '₹0',
-                'pricing-free-note': 'Forever free — No credit card required',
-                'pricing-free-feat1': 'Unlimited reminders',
-                'pricing-free-feat2': 'Voice & text support',
-                'pricing-free-feat3': 'Hindi & Hinglish',
-                'pricing-free-feat4': 'Recurring reminders',
-                'pricing-free-feat5': 'WhatsApp & Telegram',
-                'pricing-free-feat6': '15-day history',
-                'pricing-free-cta': 'Get Started Free',
-                'pricing-pro-badge': 'Coming Soon',
-                'pricing-pro-title': 'Pro',
-                'pricing-pro-price': '₹99',
-                'pricing-pro-note': 'Per month — Premium features',
-                'pricing-pro-feat1': 'Everything in Free',
-                'pricing-pro-feat2': 'Priority reminders',
-                'pricing-pro-feat3': 'Advanced analytics',
-                'pricing-pro-feat4': 'Custom reminder sounds',
-                'pricing-pro-feat5': 'Team collaboration',
-                'pricing-pro-feat6': 'Unlimited history',
-                'pricing-pro-cta': 'Coming Soon',
-                'testimonials-title': 'What users are saying',
-                'testimonial1-name': 'Priya Sharma',
-                'testimonial1-role': 'Product Manager, Mumbai',
-                'testimonial1-text': '"RemindBot has been a game-changer for my daily routine. I just send a voice note in Hinglish and it handles everything. No more missed meetings!"',
-                'testimonial2-name': 'Rahul Verma',
-                'testimonial2-role': 'Entrepreneur, Delhi',
-                'testimonial2-text': '"Finally, a reminder app that actually understands how Indians communicate. The Hindi support is perfect, and it works right in WhatsApp!"',
-                'testimonial3-name': 'Anjali Patel',
-                'testimonial3-role': 'Student, Bangalore',
-                'testimonial3-text': '"I use it for my medicine reminders and study schedules. The recurring reminders feature is so convenient. Highly recommend!"',
-                'footer-features': 'Features',
-                'footer-how': 'How it Works',
-                'footer-admin': 'Admin',
-                'footer-privacy': 'Privacy Policy',
-                'footer-terms': 'Terms of Service',
-                'footer-copyright': '© 2024 RemindBot. All rights reserved.'
-            },
-            hi: {
-                'nav-cta': 'शुरू करें',
-                'hero-badge': 'AI-संचालित मेमोरी असिस्टेंट',
-                'hero-title': 'कभी कुछ न भूलें।',
-                'hero-subtitle': 'एक स्मार्ट रिमाइंडर असिस्टेंट जो WhatsApp और Telegram पर काम करता है। प्राकृतिक भाषा, वॉइस नोट्स, और इंटेलिजेंट शेड्यूलिंग — सब एक जगह।',
-                'btn-whatsapp': 'WhatsApp पर शुरू करें',
-                'btn-telegram': 'Telegram पर आज़माएं',
-                'trust-voice': '🎙️ वॉइस सपोर्ट',
-                'trust-hindi': '🌐 हिंदी और हिंग्लिश',
-                'trust-recurring': '🔄 स्मार्ट रिकरिंग',
-                'security-badge': 'सुरक्षित और WhatsApp Business सत्यापित',
-                'features-title': 'आपको जो चाहिए वो सब',
-                'feature1-title': 'तुरंत चैट रिमाइंडर',
-                'feature1-desc': 'बस हमें मैसेज करें जैसे आप किसी दोस्त को करते हैं। "कल 3 बजे मीटिंग" — हो गया। कोई ऐप नहीं, कोई फॉर्म नहीं।',
-                'feature2-title': 'वॉइस कमांड',
-                'feature2-desc': 'टाइप करने में व्यस्त हैं? वॉइस नोट भेजें जैसे "आज रात दूध खरीदने की याद दिलाना" — हम संभाल लेंगे।',
-                'feature3-title': 'रिकरिंग रिमाइंडर',
-                'feature3-desc': 'रोज़ाना, साप्ताहिक, मासिक, या कस्टम अंतराल सेट करें। आदतों, दवाओं और मीटिंग्स के लिए बिल्कुल सही।',
-                'feature4-title': 'हिंदी और हिंग्लिश',
-                'feature4-desc': 'अंग्रेज़ी, हिंदी या हिंग्लिश में स्वाभाविक रूप से बोलें। हम सभी को पूरी तरह समझते हैं।',
-                'feature5-title': 'स्मार्ट हिस्ट्री',
-                'feature5-desc': 'पेंडिंग रिमाइंडर देखें या साधारण प्रश्नों से अपना 15-दिन का इतिहास चेक करें।',
-                'feature6-title': 'सुरक्षित और निजी',
-                'feature6-desc': 'आपका डेटा एन्क्रिप्टेड है और हम इसे कभी शेयर नहीं करते। WhatsApp-ग्रेड सुरक्षा के साथ बनाया गया।',
-                'chat-title': 'इसे एक्शन में देखें',
-                'chat-bot-name': 'RemindBot',
-                'chat-online': 'ऑनलाइन',
-                'chat-user1': 'कल सुबह 7 बजे पानी पीने की याद दिलाना',
-                'chat-bot1': 'हो गया ✅ मैं आपको कल सुबह 7:00 बजे IST पर पानी पीने की याद दिला दूंगा।',
-                'chat-user2': 'हर सोमवार 3 बजे क्लाइंट के साथ मीटिंग',
-                'chat-bot2': 'बिल्कुल! 🔄 मैंने हर सोमवार 3:00 बजे IST पर "क्लाइंट के साथ मीटिंग" के लिए रिकरिंग रिमाइंडर सेट कर दिया है।',
-                'chat-timestamp': 'अभी',
-                'chat-bot-timestamp': 'RemindBot • अभी',
-                'steps-title': 'यह कैसे काम करता है',
-                'step1-title': 'कनेक्ट करें',
-                'step1-desc': 'WhatsApp या Telegram खोलने के लिए ऊपर दिए गए बटन में से एक पर क्लिक करें। कोई साइनअप नहीं, कोई ऐप डाउनलोड नहीं।',
-                'step2-title': 'मैसेज करें',
-                'step2-desc': '"कल 3 बजे मीटिंग" जैसा मैसेज भेजें या हिंदी में वॉइस नोट भेजें। हम दोनों समझते हैं।',
-                'step3-title': 'आराम करें',
-                'step3-desc': 'हम आपको सही समय पर सूचित करेंगे। आप कभी भी "मेरे रिमाइंडर दिखाओ" पूछ सकते हैं।',
-                'pricing-title': 'सरल, पारदर्शी मूल्य निर्धारण',
-                'pricing-free-badge': 'वर्तमान में उपलब्ध',
-                'pricing-free-title': 'मुफ़्त',
-                'pricing-free-price': '₹0',
-                'pricing-free-note': 'हमेशा के लिए मुफ़्त — कोई क्रेडिट कार्ड की आवश्यकता नहीं',
-                'pricing-free-feat1': 'असीमित रिमाइंडर',
-                'pricing-free-feat2': 'वॉइस और टेक्स्ट सपोर्ट',
-                'pricing-free-feat3': 'हिंदी और हिंग्लिश',
-                'pricing-free-feat4': 'रिकरिंग रिमाइंडर',
-                'pricing-free-feat5': 'WhatsApp और Telegram',
-                'pricing-free-feat6': '15-दिन का इतिहास',
-                'pricing-free-cta': 'मुफ़्त में शुरू करें',
-                'pricing-pro-badge': 'जल्द आ रहा है',
-                'pricing-pro-title': 'Pro',
-                'pricing-pro-price': '₹99',
-                'pricing-pro-note': 'प्रति माह — प्रीमियम फीचर्स',
-                'pricing-pro-feat1': 'मुफ़्त में सब कुछ',
-                'pricing-pro-feat2': 'प्राथमिकता रिमाइंडर',
-                'pricing-pro-feat3': 'उन्नत एनालिटिक्स',
-                'pricing-pro-feat4': 'कस्टम रिमाइंडर साउंड',
-                'pricing-pro-feat5': 'टीम सहयोग',
-                'pricing-pro-feat6': 'असीमित इतिहास',
-                'pricing-pro-cta': 'जल्द आ रहा है',
-                'testimonials-title': 'यूज़र्स क्या कह रहे हैं',
-                'testimonial1-name': 'प्रिया शर्मा',
-                'testimonial1-role': 'प्रोडक्ट मैनेजर, मुंबई',
-                'testimonial1-text': '"RemindBot मेरी दैनिक दिनचर्या के लिए गेम-चेंजर रहा है। मैं बस हिंग्लिश में वॉइस नोट भेजती हूं और यह सब संभाल लेता है। अब कोई मीटिंग नहीं छूटती!"',
-                'testimonial2-name': 'राहुल वर्मा',
-                'testimonial2-role': 'उद्यमी, दिल्ली',
-                'testimonial2-text': '"आखिरकार, एक रिमाइंडर ऐप जो वास्तव में समझता है कि भारतीय कैसे संवाद करते हैं। हिंदी सपोर्ट बिल्कुल सही है, और यह WhatsApp में ही काम करता है!"',
-                'testimonial3-name': 'अंजलि पटेल',
-                'testimonial3-role': 'छात्रा, बैंगलोर',
-                'testimonial3-text': '"मैं इसे अपनी दवा रिमाइंडर और स्टडी शेड्यूल के लिए उपयोग करती हूं। रिकरिंग रिमाइंडर फीचर बहुत सुविधाजनक है। अत्यधिक अनुशंसित!"',
-                'footer-features': 'फीचर्स',
-                'footer-how': 'यह कैसे काम करता है',
-                'footer-admin': 'एडमिन',
-                'footer-privacy': 'गोपनीयता नीति',
-                'footer-terms': 'सेवा की शर्तें',
-                'footer-copyright': '© 2024 RemindBot। सर्वाधिकार सुरक्षित।'
-            }
-        };
-
-        let currentLang = 'en';
-
-        function switchLanguage(lang) {
-            currentLang = lang;
-
-            // Update all elements with data-translate attribute
-            document.querySelectorAll('[data-translate]').forEach(element => {
-                const key = element.getAttribute('data-translate');
-                if (translations[lang][key]) {
-                    element.textContent = translations[lang][key];
-                }
-            });
-
-            // Update language toggle buttons
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.getAttribute('data-lang') === lang) {
-                    btn.classList.add('active');
-                }
-            });
-
-            // Save preference
-            localStorage.setItem('preferredLanguage', lang);
+        // Google Translate Integration
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,hi',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
         }
 
-        // Initialize language toggle
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedLang = localStorage.getItem('preferredLanguage') || 'en';
-            if (savedLang !== 'en') {
-                switchLanguage(savedLang);
-            }
+        // Custom language toggle functionality
+        function changeLanguage(lang) {
+            const selectField = document.querySelector('.goog-te-combo');
+            if (selectField) {
+                selectField.value = lang;
+                selectField.dispatchEvent(new Event('change'));
 
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const lang = btn.getAttribute('data-lang');
-                    switchLanguage(lang);
+                // Update button states
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-lang') === lang) {
+                        btn.classList.add('active');
+                    }
                 });
-            });
+
+                // Save preference
+                localStorage.setItem('preferredLanguage', lang);
+            }
+        }
+
+        // Initialize language toggle buttons
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wait for Google Translate to load
+            const checkGoogleTranslate = setInterval(() => {
+                const selectField = document.querySelector('.goog-te-combo');
+                if (selectField) {
+                    clearInterval(checkGoogleTranslate);
+
+                    // Set up button click handlers
+                    document.querySelectorAll('.lang-btn').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            const lang = btn.getAttribute('data-lang');
+                            changeLanguage(lang);
+                        });
+                    });
+
+                    // Load saved language preference
+                    const savedLang = localStorage.getItem('preferredLanguage');
+                    if (savedLang && savedLang !== 'en') {
+                        setTimeout(() => changeLanguage(savedLang), 500);
+                    }
+                }
+            }, 100);
         });
     </script>
+
+    <!-- Google Translate Script -->
+    <script type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- Hidden Google Translate Element -->
+    <div id="google_translate_element" style="display: none;"></div>
+
+    <style>
+        /* Hide Google Translate branding and toolbar */
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+
+        body {
+            top: 0px !important;
+        }
+
+        .goog-te-gadget {
+            color: transparent !important;
+        }
+
+        .goog-te-gadget .goog-te-combo {
+            display: none;
+        }
+
+        /* Hide Google Translate attribution */
+        .goog-logo-link {
+            display: none !important;
+        }
+
+        .goog-te-gadget span {
+            display: none !important;
+        }
+
+        #google_translate_element {
+            display: none;
+        }
+
+        /* Prevent layout shift */
+        .skiptranslate {
+            display: none;
+        }
+    </style>
 
 </body>
 
