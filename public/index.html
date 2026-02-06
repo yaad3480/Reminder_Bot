@@ -798,6 +798,168 @@
             transform: none;
         }
 
+        /* Chat Example Section */
+        .chat-example {
+            padding: 120px 5% 140px;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .chat-window {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 32px;
+            margin-top: 60px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 24px;
+        }
+
+        .chat-header-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .chat-header-info h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .chat-header-info p {
+            font-size: 0.85rem;
+            color: #34D399;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chat-messages {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 12px;
+            animation: fadeInUp 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        .chat-message.user {
+            flex-direction: row-reverse;
+        }
+
+        .chat-bubble {
+            max-width: 75%;
+            padding: 14px 18px;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .chat-message.user .chat-bubble {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-message.bot .chat-bubble {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-timestamp {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            text-align: right;
+        }
+
+        .chat-message.bot .chat-timestamp {
+            text-align: left;
+        }
+
+        /* Typing indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 14px 18px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+
+            0%,
+            60%,
+            100% {
+                transform: translateY(0);
+                opacity: 0.7;
+            }
+
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        /* Stagger animation for chat messages */
+        .chat-message:nth-child(1) {
+            animation-delay: 0.3s;
+        }
+
+        .chat-message:nth-child(2) {
+            animation-delay: 0.8s;
+        }
+
+        .chat-message:nth-child(3) {
+            animation-delay: 1.3s;
+        }
+
+        .chat-message:nth-child(4) {
+            animation-delay: 1.8s;
+        }
+
         /* Footer */
         footer {
             padding: 70px 5% 50px;
@@ -1019,6 +1181,48 @@
                 <span class="feature-icon">🛡️</span>
                 <h3>Secure & Private</h3>
                 <p>Your data is encrypted and we never share it. Built with WhatsApp-grade security.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat Example Section -->
+    <section class="chat-example">
+        <h2 class="section-title">See it in action</h2>
+        <div class="chat-window">
+            <div class="chat-header">
+                <div class="chat-header-icon">🤖</div>
+                <div class="chat-header-info">
+                    <h4>RemindBot</h4>
+                    <p><span
+                            style="display: inline-block; width: 8px; height: 8px; background: #34D399; border-radius: 50%; margin-right: 4px;"></span>Online
+                    </p>
+                </div>
+            </div>
+            <div class="chat-messages">
+                <div class="chat-message user">
+                    <div class="chat-bubble">
+                        Remind me to drink water tomorrow 7am
+                        <div class="chat-timestamp">Just now</div>
+                    </div>
+                </div>
+                <div class="chat-message bot">
+                    <div class="chat-bubble">
+                        Done ✅ I'll remind you to drink water tomorrow at 7:00 AM IST.
+                        <div class="chat-timestamp">RemindBot • now</div>
+                    </div>
+                </div>
+                <div class="chat-message user">
+                    <div class="chat-bubble">
+                        Meeting with client every Monday 3pm
+                        <div class="chat-timestamp">Just now</div>
+                    </div>
+                </div>
+                <div class="chat-message bot">
+                    <div class="chat-bubble">
+                        Perfect! 🔄 I've set a recurring reminder for "Meeting with client" every Monday at 3:00 PM IST.
+                        <div class="chat-timestamp">RemindBot • now</div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
