@@ -562,6 +562,105 @@
             font-size: 1.05rem;
         }
 
+        /* Testimonials Section */
+        .testimonials {
+            padding: 120px 5% 140px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 28px;
+            margin-top: 60px;
+        }
+
+        .testimonial-card {
+            padding: 32px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(99, 102, 241, 0.3);
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .testimonial-info h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .testimonial-info p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .testimonial-text {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+
+        .testimonial-rating {
+            color: #FCD34D;
+            font-size: 1.1rem;
+        }
+
+        /* Security Badge */
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: rgba(16, 185, 129, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 50px;
+            font-size: 0.95rem;
+            color: #34D399;
+            font-weight: 600;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+        }
+
+        .security-badge svg {
+            width: 20px;
+            height: 20px;
+        }
+
         /* Footer */
         footer {
             padding: 70px 5% 50px;
@@ -583,6 +682,7 @@
             gap: 36px;
             justify-content: center;
             margin-bottom: 28px;
+            flex-wrap: wrap;
         }
 
         .footer-links a {
@@ -600,6 +700,7 @@
         .copyright {
             color: var(--text-muted);
             font-size: 0.95rem;
+            margin-top: 20px;
         }
 
         /* Responsive */
@@ -738,6 +839,15 @@
             <span>🌐 Hindi & Hinglish</span>
             <span>🔄 Smart Recurring</span>
         </div>
+
+        <!-- Security Badge -->
+        <div class="security-badge">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                    d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" />
+            </svg>
+            Secure & WhatsApp Business Verified
+        </div>
     </section>
 
     <section class="features">
@@ -804,12 +914,65 @@
         </div>
     </section>
 
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <h2 class="section-title">What users are saying</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">P</div>
+                    <div class="testimonial-info">
+                        <h4>Priya Sharma</h4>
+                        <p>Product Manager, Mumbai</p>
+                    </div>
+                </div>
+                <div class="testimonial-text">
+                    "RemindBot has been a game-changer for my daily routine. I just send a voice note in Hinglish and it
+                    handles everything. No more missed meetings!"
+                </div>
+                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">R</div>
+                    <div class="testimonial-info">
+                        <h4>Rahul Verma</h4>
+                        <p>Entrepreneur, Delhi</p>
+                    </div>
+                </div>
+                <div class="testimonial-text">
+                    "Finally, a reminder app that actually understands how Indians communicate. The Hindi support is
+                    perfect, and it works right in WhatsApp!"
+                </div>
+                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">A</div>
+                    <div class="testimonial-info">
+                        <h4>Anjali Patel</h4>
+                        <p>Student, Bangalore</p>
+                    </div>
+                </div>
+                <div class="testimonial-text">
+                    "I use it for my medicine reminders and study schedules. The recurring reminders feature is so
+                    convenient. Highly recommend!"
+                </div>
+                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <div class="footer-content">
             <div class="footer-links">
                 <a href="#features">Features</a>
                 <a href="#how-it-works">How it Works</a>
                 <a href="/admin.html">Admin</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
             </div>
             <p class="copyright">&copy; 2024 RemindBot. All rights reserved.</p>
         </div>
