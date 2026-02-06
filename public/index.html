@@ -661,6 +661,143 @@
             height: 20px;
         }
 
+        /* Pricing Section */
+        .pricing {
+            padding: 120px 5% 140px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .pricing-container {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-top: 60px;
+            flex-wrap: wrap;
+        }
+
+        .pricing-card {
+            flex: 1;
+            min-width: 320px;
+            max-width: 450px;
+            padding: 40px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--primary);
+            box-shadow: 0 0 40px rgba(99, 102, 241, 0.3);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(99, 102, 241, 0.3);
+        }
+
+        .pricing-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pricing-card h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .pricing-card .price {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-light), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+
+        .pricing-card .price-note {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 28px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+
+        .pricing-features li {
+            padding: 12px 0;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1rem;
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            color: #34D399;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .pricing-features li.coming-soon {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .pricing-features li.coming-soon::before {
+            content: '⏳';
+        }
+
+        .pricing-cta {
+            width: 100%;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .pricing-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(99, 102, 241, 0.5);
+        }
+
+        .pricing-cta.disabled {
+            background: rgba(100, 100, 100, 0.3);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .pricing-cta.disabled:hover {
+            transform: none;
+        }
+
         /* Footer */
         footer {
             padding: 70px 5% 50px;
@@ -910,6 +1047,46 @@
             <div class="step-content">
                 <h3>Relax</h3>
                 <p>We'll notify you at the perfect moment. You can also ask "Show my reminders" anytime.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing">
+        <h2 class="section-title">Simple, transparent pricing</h2>
+        <div class="pricing-container">
+            <!-- Free Tier -->
+            <div class="pricing-card featured">
+                <span class="pricing-badge">Currently Available</span>
+                <h3>Free</h3>
+                <div class="price">₹0</div>
+                <p class="price-note">Forever free — No credit card required</p>
+                <ul class="pricing-features">
+                    <li>Unlimited reminders</li>
+                    <li>Voice & text support</li>
+                    <li>Hindi & Hinglish</li>
+                    <li>Recurring reminders</li>
+                    <li>WhatsApp & Telegram</li>
+                    <li>15-day history</li>
+                </ul>
+                <button class="pricing-cta" onclick="window.location.href='#get-started'">Get Started Free</button>
+            </div>
+
+            <!-- Premium Tier (Coming Soon) -->
+            <div class="pricing-card">
+                <span class="pricing-badge">Coming Soon</span>
+                <h3>Pro</h3>
+                <div class="price">₹99</div>
+                <p class="price-note">Per month — Premium features</p>
+                <ul class="pricing-features">
+                    <li>Everything in Free</li>
+                    <li class="coming-soon">Priority reminders</li>
+                    <li class="coming-soon">Advanced analytics</li>
+                    <li class="coming-soon">Custom reminder sounds</li>
+                    <li class="coming-soon">Team collaboration</li>
+                    <li class="coming-soon">Unlimited history</li>
+                </ul>
+                <button class="pricing-cta disabled" disabled>Coming Soon</button>
             </div>
         </div>
     </section>
