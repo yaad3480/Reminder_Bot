@@ -226,44 +226,6 @@
             height: 300px;
         }
 
-        /* Language Toggle */
-        .lang-toggle {
-            display: flex;
-            gap: 8px;
-            background: rgba(30, 41, 59, 0.6);
-            padding: 6px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-right: 16px;
-        }
-
-        .lang-btn {
-            padding: 6px 14px;
-            background: transparent;
-            color: var(--text-secondary);
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .lang-btn.active {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            box-shadow: 0 2px 10px rgba(99, 102, 241, 0.3);
-        }
-
-        .lang-btn:hover:not(.active) {
-            color: var(--text-primary);
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-        }
-
         /* Hero Section */
         .hero {
             min-height: 100vh;
@@ -1142,14 +1104,7 @@
 
     <nav>
         <div class="logo">🐘 RemindBot</div>
-        <div class="nav-right">
-            <div class="lang-toggle">
-                <button class="lang-btn active" data-lang="en">English</button>
-                <button class="lang-btn" data-lang="hi">हिंदी</button>
-            </div>
-            <button class="nav-cta" onclick="window.location.href='#get-started'" data-translate="nav-cta">Get
-                Started</button>
-        </div>
+        <button class="nav-cta" onclick="window.location.href='#get-started'">Get Started</button>
     </nav>
 
     <section class="hero">
