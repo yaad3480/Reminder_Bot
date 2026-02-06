@@ -960,6 +960,154 @@
             animation-delay: 1.8s;
         }
 
+        /* Coming Soon Section */
+        .coming-soon {
+            padding: 100px 5%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coming-soon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        .coming-soon-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .coming-soon-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .coming-soon-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .coming-soon h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--text-primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .coming-soon-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .coming-soon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .coming-soon-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 32px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coming-soon-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .coming-soon-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+        }
+
+        .coming-soon-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .coming-soon-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            display: block;
+            position: relative;
+            z-index: 1;
+        }
+
+        .coming-soon-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .coming-soon-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .coming-soon-tag {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary-light);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
         /* Footer */
         footer {
             padding: 70px 5% 50px;
@@ -1349,6 +1497,65 @@
                     convenient. Highly recommend!"
                 </div>
                 <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coming Soon Features -->
+    <section class="coming-soon">
+        <div class="coming-soon-content">
+            <div class="coming-soon-header">
+                <span class="coming-soon-badge">🚀 Coming Soon</span>
+                <h2>The Future of RemindBot</h2>
+                <p class="coming-soon-subtitle">We're building powerful new features to make RemindBot your ultimate
+                    personal AI assistant</p>
+            </div>
+
+            <div class="coming-soon-grid">
+                <!-- Smart Habits -->
+                <div class="coming-soon-card">
+                    <span class="coming-soon-icon">🎯</span>
+                    <h3>Smart Habits</h3>
+                    <p>AI-powered habit tracking that learns your patterns and suggests optimal times for your routines.
+                        Build lasting habits with intelligent nudges.</p>
+                    <span class="coming-soon-tag">Q2 2024</span>
+                </div>
+
+                <!-- Daily Planner -->
+                <div class="coming-soon-card">
+                    <span class="coming-soon-icon">📅</span>
+                    <h3>Daily Planner Summaries</h3>
+                    <p>Get smart morning briefings of your day ahead and evening summaries of completed tasks. Stay
+                        organized effortlessly.</p>
+                    <span class="coming-soon-tag">Q2 2024</span>
+                </div>
+
+                <!-- Document Memory -->
+                <div class="coming-soon-card">
+                    <span class="coming-soon-icon">📄</span>
+                    <h3>Document Memory</h3>
+                    <p>Upload important documents, receipts, or notes. RemindBot will remember and retrieve them when
+                        you need them.</p>
+                    <span class="coming-soon-tag">Q3 2024</span>
+                </div>
+
+                <!-- Calorie Tracking -->
+                <div class="coming-soon-card">
+                    <span class="coming-soon-icon">🍎</span>
+                    <h3>Calorie Tracking</h3>
+                    <p>Simply tell RemindBot what you ate. Get instant calorie estimates and daily nutrition summaries
+                        to stay healthy.</p>
+                    <span class="coming-soon-tag">Q3 2024</span>
+                </div>
+
+                <!-- Smart Suggestions -->
+                <div class="coming-soon-card">
+                    <span class="coming-soon-icon">💡</span>
+                    <h3>Smart Suggestions</h3>
+                    <p>AI that learns from your behavior and proactively suggests reminders, tasks, and optimizations
+                        for your routine.</p>
+                    <span class="coming-soon-tag">Q4 2024</span>
+                </div>
             </div>
         </div>
     </section>
