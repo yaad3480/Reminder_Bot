@@ -760,14 +760,7 @@
             font-size: 1.2rem;
         }
 
-        .pricing-features li.coming-soon {
-            color: var(--text-muted);
-            font-style: italic;
-        }
-
-        .pricing-features li.coming-soon::before {
-            content: '⏳';
-        }
+        /* .pricing-features li.coming-soon styles removed to match free plan look */
 
         .pricing-cta {
             width: 100%;
@@ -789,7 +782,8 @@
         }
 
         .pricing-cta.disabled {
-            background: rgba(100, 100, 100, 0.3);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            opacity: 0.8;
             cursor: not-allowed;
             box-shadow: none;
         }
@@ -1439,11 +1433,11 @@
                 <p class="price-note">Per month — Premium features</p>
                 <ul class="pricing-features">
                     <li>Unlimited reminders</li>
-                    <li class="coming-soon">Smart habit tracking</li>
-                    <li class="coming-soon">Daily planner summaries</li>
-                    <li class="coming-soon">Document memory</li>
-                    <li class="coming-soon">Calorie tracking</li>
-                    <li class="coming-soon">Smart AI suggestions</li>
+                    <li>Smart habit tracking</li>
+                    <li>Daily planner summaries</li>
+                    <li>Document memory</li>
+                    <li>Calorie tracking</li>
+                    <li>Smart AI suggestions</li>
                 </ul>
                 <button class="pricing-cta disabled" disabled>Coming Soon</button>
             </div>
