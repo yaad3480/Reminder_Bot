@@ -937,6 +937,65 @@
             }
         }
 
+        /* Chat Input Area */
+        .chat-input-container {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease-out 0.5s forwards;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .chat-input:focus {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .chat-send-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .chat-send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .chat-send-btn svg {
+            width: 20px;
+            height: 20px;
+            margin-left: 2px;
+        }
+
+        .chat-send-btn.active {
+            transform: scale(0.95);
+        }
+
         /* Stagger animation for chat messages */
         .chat-message:nth-child(1) {
             animation-delay: 0.3s;
@@ -1347,31 +1406,17 @@
                     </p>
                 </div>
             </div>
-            <div class="chat-messages">
-                <div class="chat-message user">
-                    <div class="chat-bubble">
-                        Remind me to drink water tomorrow 7am
-                        <div class="chat-timestamp">Just now</div>
-                    </div>
-                </div>
-                <div class="chat-message bot">
-                    <div class="chat-bubble">
-                        Done ✅ I'll remind you to drink water tomorrow at 7:00 AM IST.
-                        <div class="chat-timestamp">RemindBot • now</div>
-                    </div>
-                </div>
-                <div class="chat-message user">
-                    <div class="chat-bubble">
-                        Meeting with client every Monday 3pm
-                        <div class="chat-timestamp">Just now</div>
-                    </div>
-                </div>
-                <div class="chat-message bot">
-                    <div class="chat-bubble">
-                        Perfect! 🔄 I've set a recurring reminder for "Meeting with client" every Monday at 3:00 PM IST.
-                        <div class="chat-timestamp">RemindBot • now</div>
-                    </div>
-                </div>
+            <div class="chat-messages" id="chat-messages">
+                <!-- Messages will be injected by JS -->
+            </div>
+
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" id="chat-input" placeholder="Type a message..." readonly>
+                <button class="chat-send-btn" id="chat-send-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                    </svg>
+                </button>
             </div>
         </div>
     </section>
@@ -1595,6 +1640,143 @@
                 }
             });
         });
+
+        // Chat Simulation
+        class ChatSimulation {
+            constructor() {
+                this.messagesContainer = document.getElementById('chat-messages');
+                this.inputField = document.getElementById('chat-input');
+                this.sendBtn = document.getElementById('chat-send-btn');
+                this.isTyping = false;
+
+                this.script = [
+                    { type: 'wait', duration: 1000 },
+                    { type: 'type', text: "Remind me to hit the Gym everyday at 3:00 PM" },
+                    { type: 'action', action: 'send' },
+                    { type: 'wait', duration: 1500 },
+                    { type: 'bot', text: "Done ✅ I'll remind you to hit the Gym everyday at 3:00 PM IST." },
+                    { type: 'wait', duration: 2500 },
+                    { type: 'type', text: "Can you set a meeting header for tomorrow 10am?" },
+                    { type: 'action', action: 'send' },
+                    { type: 'wait', duration: 1500 },
+                    { type: 'bot', text: "Added! 📅 Meeting header scheduled for tomorrow at 10:00 AM." },
+                    { type: 'wait', duration: 4000 },
+                    { type: 'action', action: 'restart' }
+                ];
+
+                this.observer = new IntersectionObserver((entries) => {
+                    if (entries[0].isIntersecting) {
+                        this.start();
+                        this.observer.disconnect();
+                    }
+                }, { threshold: 0.5 });
+
+                this.observer.observe(document.querySelector('.chat-example'));
+            }
+
+            async start() {
+                for (let step of this.script) {
+                    await this.executeStep(step);
+                    if (step.action === 'restart') {
+                        this.clearChat();
+                        this.start(); // Loop
+                        return;
+                    }
+                }
+            }
+
+            async executeStep(step) {
+                switch (step.type) {
+                    case 'wait':
+                        return new Promise(resolve => setTimeout(resolve, step.duration));
+
+                    case 'type':
+                        return this.typeText(step.text);
+
+                    case 'action':
+                        if (step.action === 'send') return this.sendMessage();
+                        break;
+
+                    case 'bot':
+                        return this.botRespond(step.text);
+                }
+            }
+
+            async typeText(text) {
+                this.inputField.value = '';
+                for (let i = 0; i < text.length; i++) {
+                    this.inputField.value += text[i];
+                    await new Promise(resolve => setTimeout(resolve, 50 + Math.random() * 50));
+                }
+                await new Promise(resolve => setTimeout(resolve, 300));
+            }
+
+            async sendMessage() {
+                const text = this.inputField.value;
+                if (!text) return;
+
+                this.sendBtn.classList.add('active');
+                setTimeout(() => this.sendBtn.classList.remove('active'), 150);
+
+                this.addMessage(text, 'user');
+                this.inputField.value = '';
+            }
+
+            async botRespond(text) {
+                const typingId = this.showTyping();
+                await new Promise(resolve => setTimeout(resolve, 1500)); // Thinking time
+                this.removeMessage(typingId);
+                this.addMessage(text, 'bot');
+            }
+
+            addMessage(text, sender) {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `chat-message ${sender}`;
+                msgDiv.innerHTML = `
+                    <div class="chat-bubble">
+                        ${text}
+                        <div class="chat-timestamp">${sender === 'bot' ? 'RemindBot • now' : 'Just now'}</div>
+                    </div>
+                `;
+                this.messagesContainer.appendChild(msgDiv);
+                this.scrollToBottom();
+            }
+
+            showTyping() {
+                const id = 'typing-' + Date.now();
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `chat-message bot`;
+                msgDiv.id = id;
+                msgDiv.innerHTML = `
+                    <div class="chat-bubble waiting">
+                        <div class="typing-indicator">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                `;
+                this.messagesContainer.appendChild(msgDiv);
+                this.scrollToBottom();
+                return id;
+            }
+
+            removeMessage(id) {
+                const el = document.getElementById(id);
+                if (el) el.remove();
+            }
+
+            scrollToBottom() {
+                this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+            }
+
+            clearChat() {
+                this.messagesContainer.innerHTML = '';
+            }
+        }
+
+        // Initialize chat simulation
+        new ChatSimulation();
 
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
