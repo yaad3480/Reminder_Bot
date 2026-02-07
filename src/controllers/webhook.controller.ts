@@ -144,7 +144,7 @@ export const handleTwilioWebhook = async (req: Request, res: Response) => {
                     await sendWhatsAppMessage(from, "🎧 Processing your voice message...");
 
                     const { transcribeAudio } = await import('../services/voice.service');
-                    const text = await transcribeAudio(mediaUrl, 'whatsapp');
+                    const text = await transcribeAudio(mediaUrl, 'twilio');
 
                     if (text) {
                         await sendWhatsAppMessage(from, `🗣 I heard: "${text}"`);

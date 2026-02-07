@@ -48,7 +48,7 @@ const convertToMp3 = (inputPath: string, outputPath: string): Promise<string> =>
     });
 };
 
-export const transcribeAudio = async (url: string, platform: 'whatsapp' | 'telegram'): Promise<string | null> => {
+export const transcribeAudio = async (url: string, platform: 'whatsapp' | 'telegram' | 'twilio'): Promise<string | null> => {
     // Determine temp dir relatively or absolutely
     const tempDir = path.join(__dirname, '../../temp');
     if (!fs.existsSync(tempDir)) {
@@ -64,9 +64,17 @@ export const transcribeAudio = async (url: string, platform: 'whatsapp' | 'teleg
     const inputPathWithExt = inputPath + '.ogg';
 
     try {
-        let headers = {};
+        let headers: any = {};
         if (platform === 'whatsapp') {
             headers = { Authorization: `Bearer ${config.whatsappToken}` };
+        } else if (platform === 'twilio') {
+            // Twilio media URLs require Basic Authentication
+            const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
+            const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
+            if (twilioAccountSid && twilioAuthToken) {
+                const basicAuth = Buffer.from(`${twilioAccountSid}:${twilioAuthToken}`).toString('base64');
+                headers = { Authorization: `Basic ${basicAuth}` };
+            }
         }
         // Telegram URL contains token, no header needed usually for file download
 
