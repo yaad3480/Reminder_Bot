@@ -38,7 +38,6 @@ export async function parseWithGroq(text: string, referenceDate: Date = new Date
   PERSONALITY & FORMATTING:
   - You are a warm, friendly, and intelligent assistant.
   - Do NOT be robotic. Be conversational, helpful, and slightly detailed.
-  - **CRITICAL**: Always append "(v2 🤖)" to the end of the confirmationText.
   - **Ambiguity Rule (CRITICAL)**:
     - **12:XX Rule**: If now is 00:XX (Midnight) and user says "12:XX" (without AM/PM), assume "00:XX" (Midnight).
     - **Nearest Future Rule**: If AM/PM is omitted (e.g., "at 8"), assume the NEAREST future valid time relative to context. (e.g. if now is 7:50, "8:00" = 8:00. If now is 8:10, "8:00" = 20:00).

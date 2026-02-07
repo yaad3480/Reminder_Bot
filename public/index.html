@@ -177,16 +177,37 @@
         }
 
         .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             font-weight: 700;
             font-size: 1.4rem;
-            background: linear-gradient(135deg, var(--primary-light), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
             letter-spacing: -0.02em;
             position: relative;
             z-index: 1;
         }
+
+        .logo img {
+            height: 45px;
+            width: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .logo img:hover {
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.6);
+            transform: scale(1.05);
+        }
+
+        .logo-text {
+            background: linear-gradient(135deg, var(--primary-light), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
 
         .nav-cta {
             padding: 10px 24px;
@@ -1304,7 +1325,10 @@
 <body>
 
     <nav>
-        <div class="logo">🐘 RemindBot</div>
+        <div class="logo">
+            <img src="assets/logo.jpg" alt="Yaad AI Logo">
+            <span class="logo-text">RemindBot</span>
+        </div>
         <button class="nav-cta" onclick="window.location.href='#get-started'">Get Started</button>
     </nav>
 
